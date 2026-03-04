@@ -46,6 +46,7 @@ const typeColors: Record<string, string> = {
         <div class="group flex items-center gap-3 p-3.5 rounded-xl border border-border bg-bg-card hover:bg-bg-hover hover:border-border-light transition-all duration-200 cursor-default">
           <!-- Exchange color dot -->
           <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 text-sm font-bold font-mono"
+               aria-hidden="true"
                style={`background: ${ex.color}18; border: 1px solid ${ex.color}30; color: ${ex.color}`}>
             {ex.name.slice(0, 2)}
           </div>
