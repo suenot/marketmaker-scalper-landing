@@ -1,0 +1,44 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+import Hero from '../components/Hero.astro';
+import Features from '../components/Features.astro';
+import Exchanges from '../components/Exchanges.astro';
+import Widgets from '../components/Widgets.astro';
+import Hotkeys from '../components/Hotkeys.astro';
+import Download from '../components/Download.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout>
+  <Nav />
+  <main>
+    <Hero />
+    <Features />
+    <Exchanges />
+    <Widgets />
+    <Hotkeys />
+    <Download />
+  </main>
+  <Footer />
+</Layout>
+
+<style is:global>
+  /* Ticker animation fix: duplicate content for seamless loop */
+  .animate-ticker {
+    animation: ticker 40s linear infinite;
+  }
+  @keyframes ticker {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* Smooth scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: #0a0b0f; }
+  ::-webkit-scrollbar-thumb { background: #1e2235; border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: #252840; }
+
+  /* Selection */
+  ::selection { background: rgba(0, 212, 160, 0.2); color: #e8eaf0; }
+</style>

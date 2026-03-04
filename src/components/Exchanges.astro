@@ -1,0 +1,65 @@
+---
+const exchanges = [
+  { name: 'Binance', type: 'Spot', color: '#F0B90B' },
+  { name: 'Bybit', type: 'Perp', color: '#F7A600' },
+  { name: 'OKX', type: 'Perp', color: '#2371FF' },
+  { name: 'Kraken', type: 'Spot', color: '#5741D9' },
+  { name: 'KuCoin', type: 'Spot', color: '#26A17B' },
+  { name: 'Gate', type: 'Perp', color: '#0066FF' },
+  { name: 'Bitget', type: 'Perp', color: '#00CED1' },
+  { name: 'Hyperliquid', type: 'Perp', color: '#4ADE80' },
+  { name: 'Coinex', type: 'Spot', color: '#2CA4EA' },
+  { name: 'Bitfinex', type: 'Spot', color: '#16B157' },
+  { name: 'Deribit', type: 'Options', color: '#05B2EE' },
+  { name: 'BingX', type: 'Perp', color: '#1765FF' },
+  { name: 'MEXC', type: 'Spot', color: '#3BC8B5' },
+  { name: 'HTX', type: 'Spot', color: '#1890FF' },
+  { name: 'Phemex', type: 'Perp', color: '#9C4EFF' },
+  { name: 'LBank', type: 'Spot', color: '#3CB4FF' },
+  { name: 'Bitmart', type: 'Spot', color: '#36A0FF' },
+  { name: 'Weex', type: 'Perp', color: '#FF6B2B' },
+  { name: 'XT', type: 'Spot', color: '#00C4A0' },
+  { name: 'Ourbit', type: 'Spot', color: '#8B5CF6' },
+];
+
+const typeColors: Record<string, string> = {
+  'Spot': 'text-accent-blue border-accent-blue/30 bg-accent-blue/5',
+  'Perp': 'text-accent-green border-accent-green/30 bg-accent-green/5',
+  'Options': 'text-accent-purple border-accent-purple/30 bg-accent-purple/5',
+};
+---
+
+<section id="exchanges" class="py-24 px-6 bg-bg-secondary/50">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-16">
+      <div class="text-xs font-mono text-accent-green uppercase tracking-widest mb-4">Exchanges</div>
+      <h2 class="text-4xl md:text-5xl font-bold mb-4">
+        Trade on <span class="text-accent-green">20+ exchanges</span>
+      </h2>
+      <p class="text-text-secondary max-w-2xl mx-auto text-lg">
+        One terminal for all your exchange accounts. Spot, perpetuals, and options — all in one place.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+      {exchanges.map((ex) => (
+        <div class="group flex items-center gap-3 p-3.5 rounded-xl border border-border bg-bg-card hover:bg-bg-hover hover:border-border-light transition-all duration-200 cursor-default">
+          <!-- Exchange color dot -->
+          <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 text-sm font-bold font-mono"
+               style={`background: ${ex.color}18; border: 1px solid ${ex.color}30; color: ${ex.color}`}>
+            {ex.name.slice(0, 2)}
+          </div>
+          <div>
+            <div class="text-text-primary text-sm font-medium">{ex.name}</div>
+            <span class={`text-[10px] font-mono px-1.5 py-0.5 rounded border ${typeColors[ex.type]}`}>{ex.type}</span>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- More coming soon -->
+    <div class="mt-6 text-center text-sm text-text-muted font-mono">
+      + more exchanges being added regularly
+    </div>
+  </div>
+</section>

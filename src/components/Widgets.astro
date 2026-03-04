@@ -1,0 +1,105 @@
+---
+const widgetGroups = [
+  {
+    title: 'Market Data',
+    color: 'accent-green',
+    widgets: [
+      { name: 'Order Book', desc: 'Real-time bid/ask depth with heatmap visualization' },
+      { name: 'Live Trades', desc: 'Filtered trade feed with size aggregation' },
+      { name: 'Candlestick Chart', desc: 'OHLCV charts with multiple timeframes' },
+      { name: 'Cluster Chart', desc: 'Volume-at-price analysis and market profile' },
+      { name: 'Tick Chart', desc: 'Tick-by-tick price movement visualization' },
+      { name: 'Bubble Chart', desc: 'Advanced market dynamics visualization' },
+    ],
+  },
+  {
+    title: 'Trading',
+    color: 'accent-blue',
+    widgets: [
+      { name: 'Order Form', desc: 'Market, Limit, Stop, Take Profit order types' },
+      { name: 'Open Orders', desc: 'Active orders with instant cancel/modify' },
+      { name: 'Positions', desc: 'Live P&L tracking across all positions' },
+      { name: 'Trade History', desc: 'Complete execution history and stats' },
+    ],
+  },
+  {
+    title: 'Portfolio',
+    color: 'accent-purple',
+    widgets: [
+      { name: 'Balance Overview', desc: 'Account balances with pie chart breakdown' },
+      { name: 'Portfolio Tracker', desc: 'Holdings and performance over time' },
+      { name: 'Deals Manager', desc: 'Create and track trading groups/deals' },
+    ],
+  },
+  {
+    title: 'Management',
+    color: 'accent-yellow',
+    widgets: [
+      { name: 'Exchange Browser', desc: 'Browse all supported markets and pairs' },
+      { name: 'Account Manager', desc: 'Multi-account API key management' },
+      { name: 'Provider Setup', desc: 'Configure data provider connections' },
+      { name: 'Market Data', desc: 'Global market overview and stats' },
+    ],
+  },
+];
+
+const colorMap: Record<string, string> = {
+  'accent-green': 'text-accent-green border-accent-green/30 bg-accent-green/5',
+  'accent-blue': 'text-accent-blue border-accent-blue/30 bg-accent-blue/5',
+  'accent-purple': 'text-accent-purple border-accent-purple/30 bg-accent-purple/5',
+  'accent-yellow': 'text-accent-yellow border-accent-yellow/30 bg-accent-yellow/5',
+};
+---
+
+<section id="widgets" class="py-24 px-6 max-w-7xl mx-auto">
+  <div class="text-center mb-16">
+    <div class="text-xs font-mono text-accent-green uppercase tracking-widest mb-4">Widgets</div>
+    <h2 class="text-4xl md:text-5xl font-bold mb-4">
+      <span class="text-accent-green">24+</span> modular widgets
+    </h2>
+    <p class="text-text-secondary max-w-2xl mx-auto text-lg">
+      Build your perfect trading workspace by combining widgets into custom layouts.
+      Each widget can be independently configured for any exchange, market, or account.
+    </p>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    {widgetGroups.map((group) => (
+      <div class="p-6 rounded-2xl border border-border bg-bg-card">
+        <div class={`inline-flex items-center gap-2 px-3 py-1 rounded-full border text-xs font-mono mb-5 ${colorMap[group.color]}`}>
+          {group.title}
+        </div>
+        <div class="space-y-3">
+          {group.widgets.map((w) => (
+            <div class="flex items-start gap-3">
+              <div class="w-1.5 h-1.5 rounded-full bg-border-light mt-2 flex-shrink-0"></div>
+              <div>
+                <span class="text-text-primary text-sm font-medium">{w.name}</span>
+                <span class="text-text-secondary text-xs ml-2">— {w.desc}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+
+  <!-- Layout highlight -->
+  <div class="mt-10 p-6 rounded-2xl border border-accent-green/20 bg-accent-green/5">
+    <div class="flex flex-col md:flex-row items-start md:items-center gap-4">
+      <div class="w-12 h-12 rounded-xl bg-accent-green/10 border border-accent-green/30 flex items-center justify-center flex-shrink-0">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00d4a0" stroke-width="1.5">
+          <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+          <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+        </svg>
+      </div>
+      <div>
+        <h3 class="text-text-primary font-semibold mb-1">Drag-and-drop pane grid layout</h3>
+        <p class="text-text-secondary text-sm">
+          Arrange widgets freely with the split-pane system. Drag to resize, drop to reorganize.
+          Color-code widget groups to stay oriented across multiple markets and exchanges.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,268 @@
+---
+---
+
+<section class="relative min-h-screen flex flex-col items-center justify-center pt-20 pb-16 overflow-hidden">
+  <!-- Background grid -->
+  <div class="absolute inset-0 bg-grid bg-grid opacity-100 pointer-events-none"></div>
+  <!-- Hero glow -->
+  <div class="absolute inset-0 bg-hero-glow pointer-events-none"></div>
+  <!-- Subtle radial vignette -->
+  <div class="absolute inset-0 bg-radial-[ellipse_at_center] from-transparent to-bg-primary/60 pointer-events-none"></div>
+
+  <!-- Live ticker tape -->
+  <div class="absolute top-[73px] left-0 right-0 overflow-hidden border-b border-border/50 bg-bg-secondary/60 backdrop-blur-sm py-2">
+    <div class="flex animate-ticker whitespace-nowrap">
+      <span class="ticker-items flex gap-8 px-4">
+        {[
+          { sym: 'BTC/USDT', price: '67,412.50', change: '+2.14%', up: true },
+          { sym: 'ETH/USDT', price: '3,521.80', change: '+1.87%', up: true },
+          { sym: 'SOL/USDT', price: '178.42', change: '-0.63%', up: false },
+          { sym: 'BNB/USDT', price: '412.15', change: '+0.94%', up: true },
+          { sym: 'XRP/USDT', price: '0.6234', change: '+3.21%', up: true },
+          { sym: 'DOGE/USDT', price: '0.1847', change: '-1.12%', up: false },
+          { sym: 'ADA/USDT', price: '0.4521', change: '+0.78%', up: true },
+          { sym: 'AVAX/USDT', price: '38.64', change: '+2.45%', up: true },
+          { sym: 'DOT/USDT', price: '7.83', change: '-0.34%', up: false },
+          { sym: 'LINK/USDT', price: '14.92', change: '+1.56%', up: true },
+        ].map(t => (
+          <span class="text-xs font-mono flex items-center gap-2">
+            <span class="text-text-secondary">{t.sym}</span>
+            <span class="text-text-primary">{t.price}</span>
+            <span class={t.up ? 'text-accent-green' : 'text-accent-red'}>{t.change}</span>
+          </span>
+        ))}
+      </span>
+      <!-- Duplicate for seamless loop -->
+      <span class="ticker-items flex gap-8 px-4" aria-hidden="true">
+        {[
+          { sym: 'BTC/USDT', price: '67,412.50', change: '+2.14%', up: true },
+          { sym: 'ETH/USDT', price: '3,521.80', change: '+1.87%', up: true },
+          { sym: 'SOL/USDT', price: '178.42', change: '-0.63%', up: false },
+          { sym: 'BNB/USDT', price: '412.15', change: '+0.94%', up: true },
+          { sym: 'XRP/USDT', price: '0.6234', change: '+3.21%', up: true },
+          { sym: 'DOGE/USDT', price: '0.1847', change: '-1.12%', up: false },
+          { sym: 'ADA/USDT', price: '0.4521', change: '+0.78%', up: true },
+          { sym: 'AVAX/USDT', price: '38.64', change: '+2.45%', up: true },
+          { sym: 'DOT/USDT', price: '7.83', change: '-0.34%', up: false },
+          { sym: 'LINK/USDT', price: '14.92', change: '+1.56%', up: true },
+        ].map(t => (
+          <span class="text-xs font-mono flex items-center gap-2">
+            <span class="text-text-secondary">{t.sym}</span>
+            <span class="text-text-primary">{t.price}</span>
+            <span class={t.up ? 'text-accent-green' : 'text-accent-red'}>{t.change}</span>
+          </span>
+        ))}
+      </span>
+    </div>
+  </div>
+
+  <!-- Main content -->
+  <div class="relative z-10 text-center max-w-5xl mx-auto px-6 mt-8">
+    <!-- Badge -->
+    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-accent-green/30 bg-accent-green/5 text-accent-green text-xs font-mono mb-8">
+      <span class="w-1.5 h-1.5 rounded-full bg-accent-green animate-pulse-slow"></span>
+      Built with Rust · Blazing fast · Open source
+    </div>
+
+    <!-- Headline -->
+    <h1 class="text-5xl md:text-7xl font-bold tracking-tight mb-6 leading-none">
+      <span class="text-text-primary">Professional</span><br />
+      <span class="text-accent-green">Crypto Scalping</span><br />
+      <span class="text-text-primary">Terminal</span>
+    </h1>
+
+    <!-- Subheadline -->
+    <p class="text-xl text-text-secondary max-w-2xl mx-auto mb-10 leading-relaxed">
+      Trade across 20+ exchanges with real-time order books, advanced charting,
+      and hotkey-driven execution — all in a single, blazing-fast desktop app built in Rust.
+    </p>
+
+    <!-- CTA buttons -->
+    <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
+      <a
+        href="#download"
+        class="px-8 py-4 rounded-xl bg-accent-green text-bg-primary font-bold text-base hover:bg-accent-green-dim transition-all hover:scale-105 animate-glow"
+      >
+        Download Free
+      </a>
+      <a
+        href="#features"
+        class="px-8 py-4 rounded-xl border border-border-light text-text-secondary hover:text-text-primary hover:border-accent-green/40 transition-all text-base"
+      >
+        Explore Features
+      </a>
+    </div>
+
+    <!-- Stats row -->
+    <div class="flex flex-wrap justify-center gap-8 md:gap-16">
+      {[
+        { value: '20+', label: 'Exchanges' },
+        { value: '24+', label: 'Widget Types' },
+        { value: '<1ms', label: 'Latency' },
+        { value: 'MIT', label: 'License' },
+      ].map(stat => (
+        <div class="text-center">
+          <div class="text-2xl md:text-3xl font-bold font-mono text-accent-green">{stat.value}</div>
+          <div class="text-sm text-text-muted mt-1">{stat.label}</div>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <!-- Terminal mockup -->
+  <div class="relative z-10 mt-20 max-w-6xl mx-auto px-6 w-full">
+    <div class="rounded-2xl border border-border overflow-hidden shadow-2xl shadow-black/50 animate-float">
+      <!-- Window chrome -->
+      <div class="bg-bg-secondary border-b border-border px-4 py-3 flex items-center gap-3">
+        <div class="flex gap-2">
+          <div class="w-3 h-3 rounded-full bg-accent-red/80"></div>
+          <div class="w-3 h-3 rounded-full bg-accent-yellow/80"></div>
+          <div class="w-3 h-3 rounded-full bg-accent-green/80"></div>
+        </div>
+        <div class="flex-1 text-center">
+          <span class="text-xs font-mono text-text-muted">scalper.marketmaker.cc — BTC/USDT · Bybit · Perpetual</span>
+        </div>
+        <div class="text-xs font-mono text-accent-green/60">● LIVE</div>
+      </div>
+
+      <!-- Mock trading UI -->
+      <div class="bg-bg-primary p-0 grid grid-cols-12 h-[420px] text-xs font-mono">
+        <!-- Order book left -->
+        <div class="col-span-3 border-r border-border p-3 flex flex-col">
+          <div class="text-text-muted text-[10px] uppercase tracking-wider mb-2">Order Book</div>
+          <!-- Asks (sells) - red -->
+          <div class="flex-1 flex flex-col justify-end gap-0.5">
+            {[
+              ['67,520.0', '2.451', 8],
+              ['67,518.5', '1.820', 20],
+              ['67,517.0', '3.104', 35],
+              ['67,516.0', '0.891', 48],
+              ['67,515.5', '4.230', 62],
+              ['67,514.0', '1.572', 75],
+              ['67,513.0', '2.891', 88],
+            ].map(([p, v, pct]) => (
+              <div class="relative flex justify-between items-center px-1 py-0.5 rounded-sm overflow-hidden">
+                <div class="absolute inset-y-0 right-0 bg-accent-red/8" style={`width: ${pct}%`}></div>
+                <span class="text-accent-red z-10">{p}</span>
+                <span class="text-text-secondary z-10">{v}</span>
+              </div>
+            ))}
+          </div>
+          <!-- Spread -->
+          <div class="text-center py-1 text-accent-yellow text-[10px]">Spread: 0.5 · 0.00%</div>
+          <!-- Bids (buys) - green -->
+          <div class="flex-1 flex flex-col gap-0.5">
+            {[
+              ['67,513.5', '5.104', 90],
+              ['67,512.0', '2.341', 75],
+              ['67,511.0', '1.820', 60],
+              ['67,509.5', '3.672', 45],
+              ['67,508.0', '0.934', 30],
+              ['67,506.5', '2.108', 18],
+              ['67,505.0', '1.450', 8],
+            ].map(([p, v, pct]) => (
+              <div class="relative flex justify-between items-center px-1 py-0.5 rounded-sm overflow-hidden">
+                <div class="absolute inset-y-0 right-0 bg-accent-green/8" style={`width: ${pct}%`}></div>
+                <span class="text-accent-green z-10">{p}</span>
+                <span class="text-text-secondary z-10">{v}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <!-- Chart area -->
+        <div class="col-span-6 border-r border-border p-3 flex flex-col">
+          <div class="flex items-center justify-between mb-2">
+            <div class="text-text-muted text-[10px] uppercase tracking-wider">BTC/USDT · 1m</div>
+            <div class="flex gap-2 text-[10px]">
+              {['1m', '5m', '15m', '1h', '4h', '1D'].map(tf => (
+                <span class={tf === '1m' ? 'text-accent-green' : 'text-text-muted'}>{tf}</span>
+              ))}
+            </div>
+          </div>
+          <!-- Fake candlestick chart SVG -->
+          <div class="flex-1 flex items-end gap-0.5 pb-4 relative">
+            <div class="absolute inset-x-0 bottom-4 h-px border-t border-dashed border-border/50"></div>
+            {[
+              [40, 60, 35, 55, true],
+              [55, 72, 50, 68, true],
+              [68, 70, 48, 52, false],
+              [52, 65, 50, 62, true],
+              [62, 78, 60, 75, true],
+              [75, 80, 65, 68, false],
+              [68, 72, 55, 58, false],
+              [58, 70, 56, 67, true],
+              [67, 82, 65, 79, true],
+              [79, 85, 70, 72, false],
+              [72, 88, 70, 85, true],
+              [85, 90, 78, 82, false],
+              [82, 86, 75, 78, false],
+              [78, 92, 77, 90, true],
+              [90, 95, 85, 88, false],
+              [88, 96, 87, 94, true],
+              [94, 98, 88, 91, false],
+              [91, 99, 90, 97, true],
+              [97, 102, 93, 95, false],
+              [95, 105, 94, 103, true],
+            ].map(([open, high, low, close, bullish]) => (
+              <div class="flex-1 relative flex flex-col items-center" style={`height: ${high}%`}>
+                <!-- Wick -->
+                <div class={`w-px flex-1 ${bullish ? 'bg-accent-green/50' : 'bg-accent-red/50'}`}></div>
+                <!-- Body -->
+                <div
+                  class={`w-full rounded-sm ${bullish ? 'bg-accent-green' : 'bg-accent-red'}`}
+                  style={`height: ${Math.abs(close - open)}%; margin-top: auto; min-height: 2px`}
+                ></div>
+              </div>
+            ))}
+            <!-- Current price line -->
+            <div class="absolute right-0 left-0" style="bottom: 38%">
+              <div class="border-t border-dashed border-accent-green/40 flex justify-end">
+                <span class="bg-accent-green text-bg-primary px-1 text-[9px] -mt-2.5">67,513.5</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Order form right -->
+        <div class="col-span-3 p-3 flex flex-col gap-3">
+          <div class="text-text-muted text-[10px] uppercase tracking-wider">Order Form</div>
+          <!-- Buy/Sell tabs -->
+          <div class="grid grid-cols-2 gap-1">
+            <button class="py-1.5 rounded bg-accent-green/20 text-accent-green text-[10px] font-semibold border border-accent-green/30">BUY</button>
+            <button class="py-1.5 rounded bg-transparent text-text-muted text-[10px] border border-border">SELL</button>
+          </div>
+          <!-- Order type -->
+          <div class="text-[10px] text-text-muted">Limit</div>
+          <!-- Price field -->
+          <div class="border border-border rounded p-1.5 bg-bg-secondary">
+            <div class="text-[9px] text-text-muted mb-0.5">Price (USDT)</div>
+            <div class="text-accent-green text-[11px]">67,513.50</div>
+          </div>
+          <!-- Qty field -->
+          <div class="border border-border rounded p-1.5 bg-bg-secondary">
+            <div class="text-[9px] text-text-muted mb-0.5">Qty (BTC)</div>
+            <div class="text-text-primary text-[11px]">0.100</div>
+          </div>
+          <!-- Total -->
+          <div class="text-[10px] text-text-muted flex justify-between">
+            <span>Total:</span><span class="text-text-primary">$6,751.35</span>
+          </div>
+          <!-- Hotkeys hint -->
+          <div class="mt-auto space-y-1">
+            <div class="text-[9px] text-text-muted">Quick keys:</div>
+            <div class="flex gap-1 flex-wrap">
+              {['F1 Buy', 'F2 Sell', 'F5 Cancel'].map(k => (
+                <span class="px-1 py-0.5 bg-bg-card border border-border rounded text-[9px] text-text-secondary">{k}</span>
+              ))}
+            </div>
+          </div>
+          <!-- Buy button -->
+          <button class="w-full py-2 rounded bg-accent-green text-bg-primary font-bold text-[11px] hover:bg-accent-green-dim transition-colors">
+            BUY BTC
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
