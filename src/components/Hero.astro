@@ -1,268 +1,406 @@
 ---
+// Exact colors from src/theme.rs
+// BACKGROUND: #1a1a2e  PANEL_BG: #161628
+// BID_GREEN: #26a69a   ASK_RED: #ef5350   SPREAD_YELLOW: #ffeb3b
+// TEXT_BRIGHT: #ffffff  TEXT_NORMAL: #c0c0cc  TEXT_DIM: #808090
+// GRID_LINE: #2a2a3e   LAST_PRICE_LINE: #ffd700
+// TAB_ACTIVE: #333359  TAB_INACTIVE: #1f1f38  BORDER: #333348
+// Header/TabBar bg: #0f0f1e
+
+const asks = [
+  { price: '67,521.0', vol: '0.842', pct: 12 },
+  { price: '67,519.5', vol: '2.104', pct: 28 },
+  { price: '67,518.0', vol: '1.531', pct: 20 },
+  { price: '67,517.0', vol: '3.870', pct: 52 },
+  { price: '67,516.5', vol: '0.614', pct: 8  },
+  { price: '67,515.5', vol: '5.230', pct: 70 },
+  { price: '67,514.5', vol: '2.891', pct: 38 },
+  { price: '67,513.5', vol: '7.410', pct: 100},
+];
+const bids = [
+  { price: '67,513.0', vol: '6.852', pct: 92 },
+  { price: '67,512.0', vol: '3.201', pct: 43 },
+  { price: '67,511.0', vol: '4.730', pct: 63 },
+  { price: '67,510.5', vol: '1.450', pct: 19 },
+  { price: '67,509.0', vol: '2.108', pct: 28 },
+  { price: '67,508.0', vol: '0.934', pct: 12 },
+  { price: '67,507.0', vol: '3.672', pct: 49 },
+  { price: '67,505.5', vol: '1.820', pct: 24 },
+];
+// [openPct, closePct, highPct, lowPct, bull] where pct is price% (0=low, 100=high)
+const candles = [
+  [38,52,55,35,true],[52,48,55,42,false],[48,60,62,46,true],[60,55,64,50,false],
+  [55,67,70,53,true],[67,63,71,58,false],[63,72,75,61,true],[72,78,80,70,true],
+  [78,74,81,70,false],[74,80,83,72,true],[80,76,84,73,false],[76,85,87,74,true],
+  [85,82,88,78,false],[82,89,91,80,true],[89,86,92,83,false],[86,93,95,84,true],
+  [93,90,96,87,false],[90,96,98,88,true],[96,93,99,90,false],[93,100,102,91,true],
+];
+const trades = [
+  { time:'14:32:18', price:'67,513.0', amt:'0.842', side:'buy'  },
+  { time:'14:32:17', price:'67,512.5', amt:'2.104', side:'sell' },
+  { time:'14:32:17', price:'67,513.0', amt:'0.531', side:'buy'  },
+  { time:'14:32:16', price:'67,511.0', amt:'1.870', side:'sell' },
+  { time:'14:32:15', price:'67,513.5', amt:'0.614', side:'buy'  },
+  { time:'14:32:15', price:'67,514.0', amt:'3.230', side:'buy'  },
+  { time:'14:32:14', price:'67,511.5', amt:'0.891', side:'sell' },
+  { time:'14:32:13', price:'67,510.0', amt:'5.410', side:'sell' },
+];
 ---
 
-<section class="relative min-h-screen flex flex-col items-center justify-center pt-20 pb-16 overflow-hidden">
-  <!-- Background grid -->
-  <div class="absolute inset-0 bg-grid bg-grid opacity-100 pointer-events-none"></div>
-  <!-- Hero glow -->
-  <div class="absolute inset-0 bg-hero-glow pointer-events-none"></div>
-  <!-- Subtle radial vignette -->
-  <div class="absolute inset-0 bg-radial-[ellipse_at_center] from-transparent to-bg-primary/60 pointer-events-none"></div>
+<section class="relative min-h-screen flex flex-col items-center justify-center pt-20 pb-16 px-4 overflow-hidden">
+  <!-- Background -->
+  <div class="absolute inset-0" style="background:radial-gradient(ellipse 80% 50% at 50% -10%,rgba(38,166,154,0.08),transparent),#0a0b0f;"></div>
+  <div class="absolute inset-0 opacity-30" style="background-image:linear-gradient(rgba(38,166,154,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(38,166,154,0.04) 1px,transparent 1px);background-size:40px 40px;"></div>
 
-  <!-- Live ticker tape -->
-  <div class="absolute top-[73px] left-0 right-0 overflow-hidden border-b border-border/50 bg-bg-secondary/60 backdrop-blur-sm py-2">
-    <div class="flex animate-ticker whitespace-nowrap">
-      <span class="ticker-items flex gap-8 px-4">
-        {[
-          { sym: 'BTC/USDT', price: '67,412.50', change: '+2.14%', up: true },
-          { sym: 'ETH/USDT', price: '3,521.80', change: '+1.87%', up: true },
-          { sym: 'SOL/USDT', price: '178.42', change: '-0.63%', up: false },
-          { sym: 'BNB/USDT', price: '412.15', change: '+0.94%', up: true },
-          { sym: 'XRP/USDT', price: '0.6234', change: '+3.21%', up: true },
-          { sym: 'DOGE/USDT', price: '0.1847', change: '-1.12%', up: false },
-          { sym: 'ADA/USDT', price: '0.4521', change: '+0.78%', up: true },
-          { sym: 'AVAX/USDT', price: '38.64', change: '+2.45%', up: true },
-          { sym: 'DOT/USDT', price: '7.83', change: '-0.34%', up: false },
-          { sym: 'LINK/USDT', price: '14.92', change: '+1.56%', up: true },
-        ].map(t => (
-          <span class="text-xs font-mono flex items-center gap-2">
-            <span class="text-text-secondary">{t.sym}</span>
-            <span class="text-text-primary">{t.price}</span>
-            <span class={t.up ? 'text-accent-green' : 'text-accent-red'}>{t.change}</span>
-          </span>
-        ))}
-      </span>
-      <!-- Duplicate for seamless loop -->
-      <span class="ticker-items flex gap-8 px-4" aria-hidden="true">
-        {[
-          { sym: 'BTC/USDT', price: '67,412.50', change: '+2.14%', up: true },
-          { sym: 'ETH/USDT', price: '3,521.80', change: '+1.87%', up: true },
-          { sym: 'SOL/USDT', price: '178.42', change: '-0.63%', up: false },
-          { sym: 'BNB/USDT', price: '412.15', change: '+0.94%', up: true },
-          { sym: 'XRP/USDT', price: '0.6234', change: '+3.21%', up: true },
-          { sym: 'DOGE/USDT', price: '0.1847', change: '-1.12%', up: false },
-          { sym: 'ADA/USDT', price: '0.4521', change: '+0.78%', up: true },
-          { sym: 'AVAX/USDT', price: '38.64', change: '+2.45%', up: true },
-          { sym: 'DOT/USDT', price: '7.83', change: '-0.34%', up: false },
-          { sym: 'LINK/USDT', price: '14.92', change: '+1.56%', up: true },
-        ].map(t => (
-          <span class="text-xs font-mono flex items-center gap-2">
-            <span class="text-text-secondary">{t.sym}</span>
-            <span class="text-text-primary">{t.price}</span>
-            <span class={t.up ? 'text-accent-green' : 'text-accent-red'}>{t.change}</span>
-          </span>
-        ))}
-      </span>
+  <!-- Hero text -->
+  <div class="relative z-10 text-center max-w-4xl mx-auto mb-10">
+    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border mb-6 text-xs font-mono"
+         style="border-color:rgba(38,166,154,0.35);background:rgba(38,166,154,0.06);color:#26a69a;">
+      <span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background:#26a69a;"></span>
+      Built with Rust · iced GUI · Open Source · MIT
     </div>
-  </div>
-
-  <!-- Main content -->
-  <div class="relative z-10 text-center max-w-5xl mx-auto px-6 mt-8">
-    <!-- Badge -->
-    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-accent-green/30 bg-accent-green/5 text-accent-green text-xs font-mono mb-8">
-      <span class="w-1.5 h-1.5 rounded-full bg-accent-green animate-pulse-slow"></span>
-      Built with Rust · Blazing fast · Open source
-    </div>
-
-    <!-- Headline -->
-    <h1 class="text-5xl md:text-7xl font-bold tracking-tight mb-6 leading-none">
-      <span class="text-text-primary">Professional</span><br />
-      <span class="text-accent-green">Crypto Scalping</span><br />
-      <span class="text-text-primary">Terminal</span>
+    <h1 class="text-5xl md:text-7xl font-bold tracking-tight mb-5 leading-none" style="color:#c0c0cc;">
+      Professional<br/>
+      <span style="color:#26a69a;">Crypto Scalping</span><br/>
+      Terminal
     </h1>
-
-    <!-- Subheadline -->
-    <p class="text-xl text-text-secondary max-w-2xl mx-auto mb-10 leading-relaxed">
+    <p class="text-lg mb-8 max-w-2xl mx-auto leading-relaxed" style="color:#808090;">
       Trade across 20+ exchanges with real-time order books, advanced charting,
-      and hotkey-driven execution — all in a single, blazing-fast desktop app built in Rust.
+      and hotkey-driven execution — all in a single, blazing-fast desktop app.
     </p>
-
-    <!-- CTA buttons -->
-    <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
-      <a
-        href="#download"
-        class="px-8 py-4 rounded-xl bg-accent-green text-bg-primary font-bold text-base hover:bg-accent-green-dim transition-all hover:scale-105 animate-glow"
-      >
+    <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-10">
+      <a href="#download"
+         class="px-8 py-3.5 rounded-lg font-bold text-base transition-all hover:opacity-90 hover:scale-105"
+         style="background:#26a69a;color:#0f0f1e;">
         Download Free
       </a>
-      <a
-        href="#features"
-        class="px-8 py-4 rounded-xl border border-border-light text-text-secondary hover:text-text-primary hover:border-accent-green/40 transition-all text-base"
-      >
+      <a href="#features"
+         class="px-8 py-3.5 rounded-lg border font-medium text-base transition-all"
+         style="border-color:#333348;color:#808090;">
         Explore Features
       </a>
     </div>
-
-    <!-- Stats row -->
-    <div class="flex flex-wrap justify-center gap-8 md:gap-16">
-      {[
-        { value: '20+', label: 'Exchanges' },
-        { value: '24+', label: 'Widget Types' },
-        { value: '<1ms', label: 'Latency' },
-        { value: 'MIT', label: 'License' },
-      ].map(stat => (
+    <div class="flex flex-wrap justify-center gap-10">
+      {[['20+','Exchanges'],['24+','Widget Types'],['<1ms','Latency'],['MIT','License']].map(([v,l]) => (
         <div class="text-center">
-          <div class="text-2xl md:text-3xl font-bold font-mono text-accent-green">{stat.value}</div>
-          <div class="text-sm text-text-muted mt-1">{stat.label}</div>
+          <div class="text-3xl font-bold font-mono" style="color:#26a69a;">{v}</div>
+          <div class="text-sm mt-1" style="color:#808090;">{l}</div>
         </div>
       ))}
     </div>
   </div>
 
-  <!-- Terminal mockup -->
-  <div class="relative z-10 mt-20 max-w-6xl mx-auto px-6 w-full">
-    <div class="rounded-2xl border border-border overflow-hidden shadow-2xl shadow-black/50 animate-float">
-      <!-- Window chrome -->
-      <div class="bg-bg-secondary border-b border-border px-4 py-3 flex items-center gap-3">
-        <div class="flex gap-2">
-          <div class="w-3 h-3 rounded-full bg-accent-red/80"></div>
-          <div class="w-3 h-3 rounded-full bg-accent-yellow/80"></div>
-          <div class="w-3 h-3 rounded-full bg-accent-green/80"></div>
+  <!-- ═══════════════════════════════════════
+       TERMINAL MOCKUP — faithful to source
+       ═══════════════════════════════════════ -->
+  <div class="relative z-10 w-full max-w-[1280px] mx-auto terminal-float">
+    <div class="rounded-xl overflow-hidden border"
+         style="border-color:#333348;background:#1a1a2e;box-shadow:0 40px 100px rgba(0,0,0,0.75),0 0 40px rgba(38,166,154,0.05);">
+
+      <!-- ── Tab Bar (36px, #0f0f1e, from tab_bar.rs) ── -->
+      <div class="flex items-center justify-between px-2"
+           style="height:36px;background:#0f0f1e;border-bottom:1px solid #2a2a3e;">
+        <div class="flex items-center gap-1">
+          <!-- Active tab: TAB_ACTIVE=#333359, border rgba(255,255,255,0.15) -->
+          <div class="flex items-center px-3 rounded select-none"
+               style="height:26px;background:#333359;color:#ffffff;border:1px solid rgba(255,255,255,0.15);font-size:11px;font-family:monospace;">
+            Dashboard 1
+          </div>
+          <!-- Inactive tab: TAB_INACTIVE=#1f1f38 -->
+          <div class="flex items-center px-3 rounded select-none"
+               style="height:26px;background:#1f1f38;color:#808090;font-size:11px;font-family:monospace;">
+            Dashboard 2
+          </div>
+          <div class="flex items-center justify-center rounded ml-1 select-none"
+               style="height:26px;width:26px;background:rgba(255,255,255,0.04);color:#808090;font-size:14px;">+</div>
         </div>
-        <div class="flex-1 text-center">
-          <span class="text-xs font-mono text-text-muted">scalper.marketmaker.cc — BTC/USDT · Bybit · Perpetual</span>
+        <!-- Right: mps | fps + Settings + User -->
+        <div class="flex items-center gap-2" style="font-size:10px;font-family:monospace;">
+          <span style="color:#26a69a;">8 mps</span>
+          <span style="color:#808090;">|</span>
+          <span style="color:#808090;">62 fps</span>
+          <span class="px-2 rounded" style="height:22px;line-height:22px;background:rgba(255,255,255,0.04);color:#808090;font-size:10px;">Settings</span>
+          <span class="px-2 rounded" style="height:22px;line-height:22px;background:rgba(255,255,255,0.04);color:#808090;font-size:10px;">User</span>
         </div>
-        <div class="text-xs font-mono text-accent-green/60">● LIVE</div>
       </div>
 
-      <!-- Mock trading UI -->
-      <div class="bg-bg-primary p-0 grid grid-cols-12 h-[420px] text-xs font-mono">
-        <!-- Order book left -->
-        <div class="col-span-3 border-r border-border p-3 flex flex-col">
-          <div class="text-text-muted text-[10px] uppercase tracking-wider mb-2">Order Book</div>
-          <!-- Asks (sells) - red -->
-          <div class="flex-1 flex flex-col justify-end gap-0.5">
-            {[
-              ['67,520.0', '2.451', 8],
-              ['67,518.5', '1.820', 20],
-              ['67,517.0', '3.104', 35],
-              ['67,516.0', '0.891', 48],
-              ['67,515.5', '4.230', 62],
-              ['67,514.0', '1.572', 75],
-              ['67,513.0', '2.891', 88],
-            ].map(([p, v, pct]) => (
-              <div class="relative flex justify-between items-center px-1 py-0.5 rounded-sm overflow-hidden">
-                <div class="absolute inset-y-0 right-0 bg-accent-red/8" style={`width: ${pct}%`}></div>
-                <span class="text-accent-red z-10">{p}</span>
-                <span class="text-text-secondary z-10">{v}</span>
-              </div>
-            ))}
+      <!-- ── Pane Grid: 3 columns ── -->
+      <div style="display:grid;grid-template-columns:220px 1fr 210px;height:510px;">
+
+        <!-- ═══ ORDER BOOK (from orderbook/mod.rs) ═══ -->
+        <div style="display:flex;flex-direction:column;border-right:1px solid #333348;background:#161628;">
+          <!-- Widget header (28px, #0f0f1e, from wrapper.rs) -->
+          <div class="flex items-center gap-1.5"
+               style="height:28px;flex-shrink:0;background:#0f0f1e;border-bottom:1px solid #2a2a3e;padding:0 6px;">
+            <!-- Group color bar (cyan group) -->
+            <div style="width:3px;height:16px;background:#33b8c8;border-radius:2px;flex-shrink:0;"></div>
+            <span style="font-size:12px;color:#c0c0cc;font-family:sans-serif;">Order Book</span>
+            <div style="font-size:9px;color:#808090;background:rgba(255,255,255,0.05);padding:1px 4px;border-radius:2px;margin-left:2px;font-family:monospace;">orderbook</div>
+            <div style="flex:1;"></div>
+            <span style="background:rgba(255,255,255,0.04);color:#808090;font-size:10px;padding:1px 5px;border-radius:2px;font-family:monospace;">_</span>
+            <span style="background:rgba(255,0,0,0.08);color:#ef5350;font-size:10px;padding:1px 5px;border-radius:2px;font-family:monospace;margin-left:2px;">×</span>
           </div>
-          <!-- Spread -->
-          <div class="text-center py-1 text-accent-yellow text-[10px]">Spread: 0.5 · 0.00%</div>
-          <!-- Bids (buys) - green -->
-          <div class="flex-1 flex flex-col gap-0.5">
-            {[
-              ['67,513.5', '5.104', 90],
-              ['67,512.0', '2.341', 75],
-              ['67,511.0', '1.820', 60],
-              ['67,509.5', '3.672', 45],
-              ['67,508.0', '0.934', 30],
-              ['67,506.5', '2.108', 18],
-              ['67,505.0', '1.450', 8],
-            ].map(([p, v, pct]) => (
-              <div class="relative flex justify-between items-center px-1 py-0.5 rounded-sm overflow-hidden">
-                <div class="absolute inset-y-0 right-0 bg-accent-green/8" style={`width: ${pct}%`}></div>
-                <span class="text-accent-green z-10">{p}</span>
-                <span class="text-text-secondary z-10">{v}</span>
-              </div>
-            ))}
+          <!-- Order Book canvas — SVG replica of orderbook/mod.rs draw() -->
+          <div style="flex:1;overflow:hidden;background:#161628;">
+            <svg width="100%" height="100%" viewBox="0 0 220 482" preserveAspectRatio="xMidYMid meet" style="display:block;">
+              <rect width="220" height="482" fill="#161628"/>
+
+              <!-- ASKS (top) — best ask at bottom of section -->
+              {asks.map((row, i) => {
+                const y = 4 + i * 28;
+                const intensity = row.pct / 100;
+                const bgA = 0.06 + intensity * 0.14;
+                const barA = 0.3 + intensity * 0.5;
+                const barW = intensity * 62;
+                return <>
+                  <rect x="0" y={y} width="220" height="27" fill={`rgba(239,83,80,${bgA})`}/>
+                  {/* Volume bar — RIGHT side of center price col */}
+                  <rect x={155} y={y+2} width={barW} height="23" fill={`rgba(239,83,80,${barA})`} rx="1"/>
+                  {/* Horizontal grid line */}
+                  <line x1="0" y1={y+27} x2="220" y2={y+27} stroke="#2a2a3e" stroke-width="0.5"/>
+                  {/* Volume text */}
+                  <text x="157" y={y+16} fill="#ffffff" font-size="10" font-family="monospace">{row.vol}</text>
+                  {/* Price — centered at x=110 */}
+                  <text x="110" y={y+16} fill="#ef5350" font-size="10" font-family="monospace" text-anchor="middle">{row.price}</text>
+                </>;
+              })}
+
+              <!-- Spread area (dark bg + yellow label + golden last-price line) -->
+              <rect x="0" y={4 + asks.length * 28} width="220" height="22" fill="rgba(6,6,20,0.7)"/>
+              <line x1="0" y1={4 + asks.length * 28 + 1} x2="220" y2={4 + asks.length * 28 + 1} stroke="#ffd700" stroke-width="1.5"/>
+              <text x="110" y={4 + asks.length * 28 + 15} fill="#ffeb3b" font-size="10" font-family="monospace" text-anchor="middle">Spread: 0.50 · 0.0007%</text>
+
+              <!-- BIDS (bottom) — best bid at top -->
+              {bids.map((row, i) => {
+                const y = 4 + asks.length * 28 + 22 + i * 28;
+                const intensity = row.pct / 100;
+                const bgA = 0.06 + intensity * 0.14;
+                const barA = 0.3 + intensity * 0.5;
+                const barW = intensity * 62;
+                return <>
+                  <rect x="0" y={y} width="220" height="27" fill={`rgba(38,166,154,${bgA})`}/>
+                  {/* Volume bar — LEFT side of center (from price col leftward) */}
+                  <rect x={110 - 45 - barW} y={y+2} width={barW} height="23" fill={`rgba(38,166,154,${barA})`} rx="1"/>
+                  <line x1="0" y1={y+27} x2="220" y2={y+27} stroke="#2a2a3e" stroke-width="0.5"/>
+                  {/* Volume text right-aligned before price */}
+                  <text x="63" y={y+16} fill="#ffffff" font-size="10" font-family="monospace" text-anchor="end">{row.vol}</text>
+                  <text x="110" y={y+16} fill="#26a69a" font-size="10" font-family="monospace" text-anchor="middle">{row.price}</text>
+                </>;
+              })}
+
+              <!-- Vertical center divider (price axis column) -->
+              <line x1="65"  y1="0" x2="65"  y2="482" stroke="#2a2a3e" stroke-width="0.5"/>
+              <line x1="155" y1="0" x2="155" y2="482" stroke="#2a2a3e" stroke-width="0.5"/>
+            </svg>
           </div>
         </div>
 
-        <!-- Chart area -->
-        <div class="col-span-6 border-r border-border p-3 flex flex-col">
-          <div class="flex items-center justify-between mb-2">
-            <div class="text-text-muted text-[10px] uppercase tracking-wider">BTC/USDT · 1m</div>
-            <div class="flex gap-2 text-[10px]">
-              {['1m', '5m', '15m', '1h', '4h', '1D'].map(tf => (
-                <span class={tf === '1m' ? 'text-accent-green' : 'text-text-muted'}>{tf}</span>
+        <!-- ═══ CHART (from chart/mod.rs) ═══ -->
+        <div style="display:flex;flex-direction:column;border-right:1px solid #333348;background:#161628;">
+          <!-- Widget header -->
+          <div class="flex items-center gap-1.5"
+               style="height:28px;flex-shrink:0;background:#0f0f1e;border-bottom:1px solid #2a2a3e;padding:0 6px;">
+            <div style="width:3px;height:16px;background:#3366cc;border-radius:2px;flex-shrink:0;"></div>
+            <span style="font-size:12px;color:#c0c0cc;font-family:sans-serif;">Chart</span>
+            <div style="font-size:9px;color:#808090;background:rgba(255,255,255,0.05);padding:1px 4px;border-radius:2px;margin-left:2px;font-family:monospace;">chart</div>
+            <div style="flex:1;"></div>
+            <!-- Timeframe selector (1m active) -->
+            {['1m','5m','15m','1h','4h','1D'].map(tf => (
+              <span style={`font-size:9px;font-family:monospace;padding:0 3px;color:${tf==='1m'?'#26a69a':'#808090'};`}>{tf}</span>
+            ))}
+            <span style="background:rgba(255,255,255,0.04);color:#808090;font-size:10px;padding:1px 5px;border-radius:2px;margin-left:4px;font-family:monospace;">_</span>
+            <span style="background:rgba(255,0,0,0.08);color:#ef5350;font-size:10px;padding:1px 5px;border-radius:2px;margin-left:2px;font-family:monospace;">×</span>
+          </div>
+          <!-- Chart canvas — SVG replica of chart/mod.rs draw() -->
+          <div style="flex:1;overflow:hidden;background:#161628;">
+            <svg width="100%" height="100%" viewBox="0 0 820 482" preserveAspectRatio="none" style="display:block;">
+              <rect width="820" height="482" fill="#161628"/>
+
+              <!-- chart area: x 0..750, y 0..422; volume area: y 422..482; price axis: x 750..820 -->
+              <!-- Horizontal grid lines + price labels (6 lines, from chart/mod.rs) -->
+              {[0,1,2,3,4,5,6].map(i => {
+                const y = Math.round((i / 6) * 422);
+                const price = (67535 - (i / 6) * 55).toFixed(1);
+                return <>
+                  <line x1="0" y1={y} x2="750" y2={y} stroke="#2a2a3e" stroke-width="0.5"/>
+                  <text x="818" y={y+4} fill="#808090" font-size="9" font-family="monospace" text-anchor="end">{price}</text>
+                </>;
+              })}
+              <!-- Volume area separator -->
+              <line x1="0" y1="422" x2="750" y2="422" stroke="#2a2a3e" stroke-width="0.5"/>
+              <!-- Price axis separator -->
+              <line x1="750" y1="0" x2="750" y2="482" stroke="#2a2a3e" stroke-width="0.5"/>
+
+              <!-- Candlesticks + volume bars -->
+              {candles.map((c, i) => {
+                const cw = 750 / candles.length;
+                const x = i * cw;
+                const cx = x + cw / 2;
+                const bw = Math.max(cw * 0.65, 2);
+
+                // price% → Y: 0%=bottom(422), 102%=top(0)
+                const pToY = (p: number) => 422 - (p / 102) * 422;
+
+                const openY  = pToY(c[0] as number);
+                const closeY = pToY(c[1] as number);
+                const highY  = pToY(c[2] as number);
+                const lowY   = pToY(c[3] as number);
+                const bull   = c[4] as boolean;
+                const bodyTop = Math.min(openY, closeY);
+                const bodyH  = Math.max(Math.abs(openY - closeY), 2);
+                const color  = bull ? '#26a69a' : '#ef5350';
+
+                const vol = Math.abs((c[1] as number) - (c[0] as number)) + 4;
+                const volH = Math.max((vol / 25) * 54, 3);
+                const volA = 0.3 + (vol / 25) * 0.5;
+                const volColor = bull ? `rgba(38,166,154,${volA})` : `rgba(239,83,80,${volA})`;
+
+                return <>
+                  {/* Wick (high→low) */}
+                  <line x1={cx} y1={highY} x2={cx} y2={lowY} stroke={color} stroke-width="1"/>
+                  {/* Body */}
+                  <rect x={cx - bw/2} y={bodyTop} width={bw} height={bodyH} fill={color}/>
+                  {/* Volume bar */}
+                  <rect x={cx - bw/2} y={482 - volH} width={bw} height={volH} fill={volColor}/>
+                </>;
+              })}
+
+              <!-- Last price golden dashed line (at ~60% of chart height = y≈169) -->
+              <line x1="0" y1="169" x2="750" y2="169" stroke="#ffd700" stroke-width="1" stroke-dasharray="4,3"/>
+              <!-- Price label box on right axis -->
+              <rect x="750" y="162" width="70" height="14" fill="#ffd700"/>
+              <text x="818" y="172" fill="#0f0f1e" font-size="9" font-family="monospace" text-anchor="end" font-weight="bold">67,513.0</text>
+            </svg>
+          </div>
+        </div>
+
+        <!-- ═══ ORDER FORM (from order_form/mod.rs) ═══ -->
+        <div style="display:flex;flex-direction:column;background:#161628;">
+          <!-- Widget header -->
+          <div class="flex items-center gap-1.5"
+               style="height:28px;flex-shrink:0;background:#0f0f1e;border-bottom:1px solid #2a2a3e;padding:0 6px;">
+            <div style="width:3px;height:16px;background:#33b358;border-radius:2px;flex-shrink:0;"></div>
+            <span style="font-size:12px;color:#c0c0cc;font-family:sans-serif;">Order Form</span>
+            <div style="font-size:9px;color:#808090;background:rgba(255,255,255,0.05);padding:1px 4px;border-radius:2px;margin-left:2px;font-family:monospace;">order_form</div>
+            <div style="flex:1;"></div>
+            <span style="background:rgba(255,255,255,0.04);color:#808090;font-size:10px;padding:1px 5px;border-radius:2px;font-family:monospace;">_</span>
+            <span style="background:rgba(255,0,0,0.08);color:#ef5350;font-size:10px;padding:1px 5px;border-radius:2px;margin-left:2px;font-family:monospace;">×</span>
+          </div>
+          <!-- Form content (matches order_form/mod.rs view() layout, 8px padding, 6px spacing) -->
+          <div style="flex:1;overflow:hidden;padding:8px;font-size:11px;font-family:monospace;color:#c0c0cc;">
+
+            <!-- Instrument row: symbol + exchange/market (label_style container) -->
+            <div style="display:flex;align-items:center;gap:6px;padding:4px 8px;background:rgba(255,255,255,0.03);border:1px solid #333348;border-radius:3px;margin-bottom:6px;">
+              <span style="color:#ffffff;font-weight:600;font-size:12px;">BTC/USDT</span>
+              <span style="color:#808090;font-size:10px;">Bybit / Perp</span>
+            </div>
+
+            <!-- Order type tabs: Market | Limit | Stop (tab_style, active=Limit) -->
+            <div style="display:flex;gap:4px;margin-bottom:6px;">
+              {[['Market',false],['Limit',true],['Stop',false]].map(([t,active]) => (
+                <div style={`flex:1;text-align:center;padding:3px 0;font-size:10px;border-radius:3px;background:${active?'rgba(51,102,204,0.3)':'rgba(255,255,255,0.04)'};color:${active?'#6688ff':'#808090'};border:${active?'1px solid rgba(77,102,255,0.4)':'1px solid transparent'};`}>
+                  {t}
+                </div>
               ))}
             </div>
-          </div>
-          <!-- Fake candlestick chart SVG -->
-          <div class="flex-1 flex items-end gap-0.5 pb-4 relative">
-            <div class="absolute inset-x-0 bottom-4 h-px border-t border-dashed border-border/50"></div>
-            {[
-              [40, 60, 35, 55, true],
-              [55, 72, 50, 68, true],
-              [68, 70, 48, 52, false],
-              [52, 65, 50, 62, true],
-              [62, 78, 60, 75, true],
-              [75, 80, 65, 68, false],
-              [68, 72, 55, 58, false],
-              [58, 70, 56, 67, true],
-              [67, 82, 65, 79, true],
-              [79, 85, 70, 72, false],
-              [72, 88, 70, 85, true],
-              [85, 90, 78, 82, false],
-              [82, 86, 75, 78, false],
-              [78, 92, 77, 90, true],
-              [90, 95, 85, 88, false],
-              [88, 96, 87, 94, true],
-              [94, 98, 88, 91, false],
-              [91, 99, 90, 97, true],
-              [97, 102, 93, 95, false],
-              [95, 105, 94, 103, true],
-            ].map(([open, high, low, close, bullish]) => (
-              <div class="flex-1 relative flex flex-col items-center" style={`height: ${high}%`}>
-                <!-- Wick -->
-                <div class={`w-px flex-1 ${bullish ? 'bg-accent-green/50' : 'bg-accent-red/50'}`}></div>
-                <!-- Body -->
-                <div
-                  class={`w-full rounded-sm ${bullish ? 'bg-accent-green' : 'bg-accent-red'}`}
-                  style={`height: ${Math.abs(close - open)}%; margin-top: auto; min-height: 2px`}
-                ></div>
-              </div>
-            ))}
-            <!-- Current price line -->
-            <div class="absolute right-0 left-0" style="bottom: 38%">
-              <div class="border-t border-dashed border-accent-green/40 flex justify-end">
-                <span class="bg-accent-green text-bg-primary px-1 text-[9px] -mt-2.5">67,513.5</span>
+
+            <!-- Buy / Sell toggle (side_style) -->
+            <div style="display:flex;gap:4px;margin-bottom:6px;">
+              <div style="flex:1;text-align:center;padding:4px 0;font-size:11px;font-weight:600;border-radius:3px;background:rgba(38,166,154,0.3);color:#26a69a;border:1px solid #26a69a;">Buy</div>
+              <div style="flex:1;text-align:center;padding:4px 0;font-size:11px;border-radius:3px;background:rgba(255,255,255,0.04);color:#808090;border:1px solid transparent;">Sell</div>
+            </div>
+
+            <!-- Limit Price input -->
+            <div style="margin-bottom:6px;">
+              <div style="color:#808090;font-size:9px;margin-bottom:2px;">Limit Price</div>
+              <div style="padding:4px 8px;background:rgba(255,255,255,0.04);border:1px solid #333348;border-radius:3px;color:#ffffff;font-size:11px;">67,513.00</div>
+            </div>
+
+            <!-- Amount input -->
+            <div style="margin-bottom:6px;">
+              <div style="color:#808090;font-size:9px;margin-bottom:2px;">Amount</div>
+              <div style="padding:4px 8px;background:rgba(255,255,255,0.04);border:1px solid #333348;border-radius:3px;color:#ffffff;font-size:11px;">0.100</div>
+            </div>
+
+            <!-- Preset buttons: 25% 50% 75% 100% (preset_style) -->
+            <div style="display:flex;gap:4px;margin-bottom:6px;">
+              {['25%','50%','75%','100%'].map(p => (
+                <div style="flex:1;text-align:center;padding:2px 0;font-size:9px;background:rgba(255,255,255,0.06);color:#808090;border-radius:2px;">{p}</div>
+              ))}
+            </div>
+
+            <!-- SL / TP rows -->
+            <div style="display:flex;align-items:center;gap:4px;margin-bottom:4px;">
+              <span style="color:#808090;font-size:10px;width:22px;flex-shrink:0;">SL:</span>
+              <div style="flex:1;padding:3px 6px;background:rgba(255,255,255,0.04);border:1px solid #333348;border-radius:3px;color:#808090;font-size:10px;">Stop Loss</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:4px;margin-bottom:6px;">
+              <span style="color:#808090;font-size:10px;width:22px;flex-shrink:0;">TP:</span>
+              <div style="flex:1;padding:3px 6px;background:rgba(255,255,255,0.04);border:1px solid #333348;border-radius:3px;color:#808090;font-size:10px;">Take Profit</div>
+            </div>
+
+            <!-- Available balance -->
+            <div style="display:flex;gap:4px;font-size:10px;margin-bottom:4px;">
+              <span style="color:#808090;">Available:</span>
+              <span style="color:#ffffff;">1,240.50 USDT</span>
+            </div>
+
+            <!-- Total -->
+            <div style="display:flex;justify-content:space-between;font-size:10px;color:#808090;margin-bottom:6px;">
+              <span>Total:</span><span style="color:#c0c0cc;">$6,751.30</span>
+            </div>
+
+            <!-- Submit button (submit_style is_buy=true → BID_GREEN 0.8 alpha) -->
+            <div style="width:100%;padding:8px 0;text-align:center;font-size:13px;font-weight:700;background:rgba(38,166,154,0.8);color:#ffffff;border-radius:4px;margin-bottom:8px;">
+              Buy BTC
+            </div>
+
+            <!-- Hotkey hints -->
+            <div style="font-size:9px;color:#808090;">
+              <div style="margin-bottom:3px;">Quick keys:</div>
+              <div style="display:flex;gap:3px;flex-wrap:wrap;">
+                {['F1 Buy','F2 Sell','F3 Close↑','F4 Close↓','F5 Cancel'].map(k => (
+                  <span style="padding:1px 4px;background:#0f0f1e;border:1px solid #2a2a3e;border-radius:2px;color:#808090;">{k}</span>
+                ))}
               </div>
             </div>
           </div>
         </div>
+      </div><!-- end pane grid -->
 
-        <!-- Order form right -->
-        <div class="col-span-3 p-3 flex flex-col gap-3">
-          <div class="text-text-muted text-[10px] uppercase tracking-wider">Order Form</div>
-          <!-- Buy/Sell tabs -->
-          <div class="grid grid-cols-2 gap-1">
-            <button class="py-1.5 rounded bg-accent-green/20 text-accent-green text-[10px] font-semibold border border-accent-green/30">BUY</button>
-            <button class="py-1.5 rounded bg-transparent text-text-muted text-[10px] border border-border">SELL</button>
-          </div>
-          <!-- Order type -->
-          <div class="text-[10px] text-text-muted">Limit</div>
-          <!-- Price field -->
-          <div class="border border-border rounded p-1.5 bg-bg-secondary">
-            <div class="text-[9px] text-text-muted mb-0.5">Price (USDT)</div>
-            <div class="text-accent-green text-[11px]">67,513.50</div>
-          </div>
-          <!-- Qty field -->
-          <div class="border border-border rounded p-1.5 bg-bg-secondary">
-            <div class="text-[9px] text-text-muted mb-0.5">Qty (BTC)</div>
-            <div class="text-text-primary text-[11px]">0.100</div>
-          </div>
-          <!-- Total -->
-          <div class="text-[10px] text-text-muted flex justify-between">
-            <span>Total:</span><span class="text-text-primary">$6,751.35</span>
-          </div>
-          <!-- Hotkeys hint -->
-          <div class="mt-auto space-y-1">
-            <div class="text-[9px] text-text-muted">Quick keys:</div>
-            <div class="flex gap-1 flex-wrap">
-              {['F1 Buy', 'F2 Sell', 'F5 Cancel'].map(k => (
-                <span class="px-1 py-0.5 bg-bg-card border border-border rounded text-[9px] text-text-secondary">{k}</span>
-              ))}
-            </div>
-          </div>
-          <!-- Buy button -->
-          <button class="w-full py-2 rounded bg-accent-green text-bg-primary font-bold text-[11px] hover:bg-accent-green-dim transition-colors">
-            BUY BTC
-          </button>
+      <!-- ── Trades tape strip (from trades/mod.rs — Time|Price|Amount|Total header + rows) ── -->
+      <div style="height:24px;background:#0f0f1e;border-top:1px solid #2a2a3e;display:flex;align-items:center;overflow:hidden;padding:0 8px;">
+        <!-- Column headers -->
+        <div style="display:flex;gap:0;font-size:9px;font-family:monospace;flex-shrink:0;margin-right:12px;">
+          <span style="color:#808090;width:65px;">Time</span>
+          <span style="color:#808090;width:80px;">Price</span>
+          <span style="color:#808090;width:62px;">Amount</span>
+          <span style="color:#808090;width:62px;">Total</span>
+        </div>
+        <!-- Trade rows -->
+        <div style="display:flex;gap:12px;overflow:hidden;mask-image:linear-gradient(to right,transparent,black 3%,black 90%,transparent);">
+          {trades.map(t => (
+            <span style="display:flex;gap:0;font-size:9px;font-family:monospace;flex-shrink:0;white-space:nowrap;">
+              <span style="color:#808090;width:65px;">{t.time}</span>
+              <span style={`color:${t.side==='buy'?'#26a69a':'#ef5350'};width:80px;`}>{t.price}</span>
+              <span style={`color:${t.side==='buy'?'#26a69a':'#ef5350'};width:62px;`}>{t.amt}</span>
+              <span style="color:#808090;">{(parseFloat(t.price.replace(/,/g,'')) * parseFloat(t.amt)).toFixed(0)}</span>
+            </span>
+          ))}
         </div>
       </div>
-    </div>
+
+    </div><!-- end terminal window -->
   </div>
+
 </section>
+
+<style>
+  .terminal-float {
+    animation: termFloat 6s ease-in-out infinite;
+  }
+  @keyframes termFloat {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-8px); }
+  }
+</style>
