@@ -196,38 +196,25 @@ const obBids = [
       <div style="display:grid;grid-template-columns:300px 1fr 230px;height:530px;">
 
         <!-- ═══ LEFT: Cluster table ═══ -->
-        <div style="background:#13141e;border-right:1px solid #1e1f2e;overflow:hidden;">
-          <!-- Cluster column headers -->
-          <div style="display:grid;grid-template-columns:repeat(5,1fr);padding:0 2px;height:18px;border-bottom:1px solid #1e1f2e;align-items:center;">
-            {['Vol','Cnt','Δ','Cnt','Vol'].map(h => (
-              <span style="font-size:8px;color:#555;font-family:monospace;text-align:center;">{h}</span>
-            ))}
+        <div class="ct-panel">
+          <div class="ct-header">
+            {['Vol','Cnt','Δ','Cnt','Vol'].map(h => <span>{h}</span>)}
           </div>
-
-          <!-- ASK rows (above current price) -->
-          <div style="overflow:hidden;">
+          <div>
             {clusterAsks.map((row) => (
-              <div style={`display:grid;grid-template-columns:repeat(5,1fr);height:19px;align-items:center;padding:0 2px;${row[5]?'background:rgba(239,83,80,0.28);':'background:transparent;'}`}>
+              <div class={`ct-row${row[5]?' ct-hi':''}`}>
                 {[row[0],row[1],row[2],row[3],row[4]].map((v, ci) => (
-                  <span style={`font-size:10px;font-family:monospace;text-align:${ci<2?'right':ci===2?'center':'left'};padding:0 2px;color:${row[5]?'#ffffff':v===''?'transparent':ci<2?'#26a69a':ci===2?'#c0c0cc':'#ef5350'};`}>
-                    {v}
-                  </span>
+                  <span class={`c${ci}${row[5]?' cw':v===''?' cv':''}`}>{v}</span>
                 ))}
               </div>
             ))}
           </div>
-
-          <!-- Current price separator -->
-          <div style="height:1px;background:#333348;"></div>
-
-          <!-- BID rows (below current price) -->
-          <div style="overflow:hidden;">
+          <div class="ct-sep"></div>
+          <div>
             {clusterBids.map((row) => (
-              <div style={`display:grid;grid-template-columns:repeat(5,1fr);height:19px;align-items:center;padding:0 2px;${row[5]?'background:rgba(239,83,80,0.28);':'background:transparent;'}`}>
+              <div class={`ct-row${row[5]?' ct-hi':''}`}>
                 {[row[0],row[1],row[2],row[3],row[4]].map((v, ci) => (
-                  <span style={`font-size:10px;font-family:monospace;text-align:${ci<2?'right':ci===2?'center':'left'};padding:0 2px;color:${row[5]?'#ffffff':v===''?'transparent':ci<2?'#26a69a':ci===2?'#c0c0cc':'#ef5350'};`}>
-                    {v}
-                  </span>
+                  <span class={`c${ci}${row[5]?' cw':v===''?' cv':''}`}>{v}</span>
                 ))}
               </div>
             ))}
@@ -323,11 +310,21 @@ const obBids = [
 </section>
 
 <style>
-  .terminal-float {
-    animation: termFloat 6s ease-in-out infinite;
-  }
-  @keyframes termFloat {
-    0%, 100% { transform: translateY(0); }
-    50%       { transform: translateY(-8px); }
-  }
+  .terminal-float { animation: termFloat 6s ease-in-out infinite; }
+  @keyframes termFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+
+  /* Cluster table */
+  .ct-panel { background:#13141e; border-right:1px solid #1e1f2e; overflow:hidden; }
+  .ct-header { display:grid; grid-template-columns:repeat(5,1fr); height:18px; border-bottom:1px solid #1e1f2e; align-items:center; padding:0 2px; }
+  .ct-header span { font-size:8px; color:#555; font-family:monospace; text-align:center; }
+  .ct-row { display:grid; grid-template-columns:repeat(5,1fr); height:19px; align-items:center; padding:0 2px; }
+  .ct-hi { background:rgba(239,83,80,0.28); }
+  .ct-sep { height:1px; background:#333348; }
+  /* columns: 0,1 = bid (right-align, green); 2 = center (neutral); 3,4 = ask (left-align, red) */
+  .ct-row span { font-size:10px; font-family:monospace; padding:0 2px; }
+  .c0,.c1 { text-align:right; color:#26a69a; }
+  .c2 { text-align:center; color:#c0c0cc; }
+  .c3,.c4 { text-align:left; color:#ef5350; }
+  .cw { color:#ffffff !important; } /* highlighted row override */
+  .cv { color:transparent; }        /* empty cell */
 </style>
