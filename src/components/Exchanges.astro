@@ -29,38 +29,55 @@ const typeColors: Record<string, string> = {
 };
 ---
 
-<section id="exchanges" class="py-24 px-6 bg-bg-secondary/50">
-  <div class="max-w-7xl mx-auto">
-    <div class="text-center mb-16">
-      <div class="text-xs font-mono text-accent-green uppercase tracking-widest mb-4">Exchanges</div>
-      <h2 class="text-4xl md:text-5xl font-bold mb-4">
-        Trade on <span class="text-accent-green">20+ exchanges</span>
+<section id="exchanges" class="py-32 px-6 relative overflow-hidden">
+  <div class="absolute inset-0 bg-bg-secondary/30"></div>
+  <div class="absolute -top-24 -right-24 w-96 h-96 bg-accent-blue/10 blur-[100px] rounded-full"></div>
+  <div class="absolute -bottom-24 -left-24 w-96 h-96 bg-accent-green/10 blur-[100px] rounded-full"></div>
+
+  <div class="max-w-7xl mx-auto relative z-10">
+    <div class="text-center mb-20 max-w-3xl mx-auto">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-accent-green/30 bg-accent-green/10 text-[10px] font-mono text-accent-green uppercase tracking-[0.2em] mb-6 shadow-[0_0_15px_rgba(0,212,160,0.1)]">
+        Liquidity
+      </div>
+      <h2 class="text-5xl md:text-6xl font-bold mb-6 tracking-tight text-white">
+        Global <span class="text-transparent bg-clip-text bg-gradient-to-r from-accent-green to-accent-blue">Exchange Connectivity</span>
       </h2>
-      <p class="text-text-secondary max-w-2xl mx-auto text-lg">
-        One terminal for all your exchange accounts. Spot, perpetuals, and options — all in one place.
+      <p class="text-text-secondary text-xl leading-relaxed">
+        Direct low-latency connections to 20+ top-tier exchanges. Trade spot, futures, and options from a single unified interface.
       </p>
     </div>
 
-    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
       {exchanges.map((ex) => (
-        <div class="group flex items-center gap-3 p-3.5 rounded-xl border border-border bg-bg-card hover:bg-bg-hover hover:border-border-light transition-all duration-200 cursor-default">
-          <!-- Exchange color dot -->
-          <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 text-sm font-bold font-mono"
-               aria-hidden="true"
-               style={`background: ${ex.color}18; border: 1px solid ${ex.color}30; color: ${ex.color}`}>
-            {ex.name.slice(0, 2)}
-          </div>
-          <div>
-            <div class="text-text-primary text-sm font-medium">{ex.name}</div>
-            <span class={`text-[10px] font-mono px-1.5 py-0.5 rounded border ${typeColors[ex.type]}`}>{ex.type}</span>
+        <div class="group relative p-[1px] rounded-2xl transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1">
+          <!-- Gradient border on hover -->
+          <div class="absolute inset-0 rounded-2xl bg-gradient-to-b from-white/10 to-transparent group-hover:from-accent-green/50 transition-all"></div>
+
+          <div class="relative flex items-center gap-4 p-5 rounded-2xl bg-[#141620] border border-white/5 transition-all group-hover:bg-[#1a1d2a] h-full shadow-lg">
+            <!-- Exchange Brand Icon -->
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 text-base font-bold font-mono transition-transform group-hover:scale-110"
+                 aria-hidden="true"
+                 style={`background: ${ex.color}15; border: 1px solid ${ex.color}35; color: ${ex.color}; box-shadow: 0 0 20px ${ex.color}10;`}>
+              {ex.name.slice(0, 2)}
+            </div>
+            <div class="flex flex-col gap-1 overflow-hidden">
+              <div class="text-text-primary text-base font-semibold truncate tracking-tight">{ex.name}</div>
+              <div class="flex">
+                <span class={`text-[9px] font-bold font-mono px-2 py-0.5 rounded-full border transition-colors ${typeColors[ex.type]}`}>
+                   {ex.type}
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       ))}
     </div>
 
-    <!-- More coming soon -->
-    <div class="mt-6 text-center text-sm text-text-muted font-mono">
-      + more exchanges being added regularly
+    <div class="mt-16 flex flex-col items-center gap-4">
+       <div class="h-[1px] w-32 bg-gradient-to-r from-transparent via-border-light to-transparent"></div>
+       <div class="text-sm text-text-muted font-mono tracking-widest uppercase opacity-60">
+         + More venues arriving weekly
+       </div>
     </div>
   </div>
 </section>

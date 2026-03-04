@@ -1,307 +1,240 @@
----
-// Colors from scalper-iced screenshot
-// BG: ~#13141e  PANEL: ~#16172a  BID: #26a69a  ASK: #ef5350
-// TEXT: #c0c0cc  DIM: #a0aaba  YELLOW: #ffd700  GRID: #1e1f2e
+<section class="relative min-h-screen flex flex-col items-center justify-center pt-24 pb-20 px-4 overflow-hidden">
+  <!-- Dynamic Background -->
+  <div class="absolute inset-0 z-0">
+    <div class="absolute inset-0 bg-[#0a0b0f]"></div>
+    <div class="absolute inset-0 opacity-30" style="background-image: radial-gradient(circle at 50% -20%, #00d4a030, transparent 70%);"></div>
+    <div class="absolute inset-0 bg-grid opacity-20"></div>
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-accent-green/5 blur-[120px] rounded-full animate-pulse-slow"></div>
+  </div>
 
-// Cluster table data — [left_vol, left_vol2, center_val, right_vol2, right_vol, highlight]
-// above yellow line = ask levels (top → worst ask, bottom → best ask)
-// below yellow line = bid levels (top → best bid, bottom → worst bid)
-const clusterAsks = [
-  [29.94, '',     '',      8.46,  '',    false],
-  [35.46, '',     '',      8.51,  '',    false],
-  [41.59, '',     '',      8.15,  '',    false],
-  [30.33, '',     '',      6.08,  '',    false],
-  [42.26, '',     '',      11.23, '',    false],
-  [19.96, '',     '',      11.32, '',    false],
-  [5.05,  29.13,  0.432,   20.79, '',    false],
-  [21.18, 16.58,  2.87,    13.14, '',    false],
-  [18.77, 11.09,  1.63,    4.94,  '',    false],
-  [32.05, 7.59,   0.191,   25.34, 1.09,  false],
-  [20.16, 5.88,   4.40,    13.92, 2.01,  false],
-  [26.40, 10.54,  1.47,    17.08, 0.837, false],
-  [20.74, 10.00,  0.984,   21.47, 3.02,  false],
-  [23.87, 5.19,   3.45,    22.73, 8.03,  false],
-  [78.87, 24.09,  12.97,   39.45, 7.58,  true ],
-  [40.93, 8.87,   6.03,    40.69, 15.42, false],
-  [37.34, 4.21,   13.16,   17.75, 6.27,  false],
-  [30.82, 7.86,   17.69,   13.47, 6.89,  false],
-  [15.37, 7.57,   10.87,   9.81,  2.78,  false],
-];
-const clusterBids = [
-  [7.92,  14.85,  12.72,   13.48, 1.26,  false],
-  [16.17, 13.55,  12.38,   9.89,  2.05,  false],
-  [17.92, 3.26,   5.70,    10.76, 8.06,  false],
-  [10.94, 2.26,   12.10,   8.99,  2.14,  false],
-  [26.04, 4.64,   17.82,   7.38,  4.12,  false],
-  [21.40, 1.11,   2.58,    10.40, 0.811, false],
-  [14.13, 1.57,   6.28,    11.41, '',    false],
-  [6.65,  0.982,  8.47,    21.77, '',    false],
-  [4.15,  2.43,   5.28,    18.73, '',    false],
-  [9.10,  0.912,  2.01,    16.87, '',    false],
-  [6.97,  1.31,   5.05,    13.44, '',    false],
-  [8.01,  1.68,   7.41,    7.66,  '',    false],
-  [14.12, 0.964,  0.762,   12.45, '',    false],
-  [9.10,  0.031,  1.11,    10.99, '',    false],
-  [17.11, 0.061,  7.10,    15.15, '',    false],
-  [91.69, 0.022,  5.35,    11.84, '',    true ],
-  [34.67, 1.41,   0.790,   11.35, '',    false],
-  [26.10, 0.687,  1.92,    3.96,  '',    false],
-];
-
-// Bubble chart circles — [x%, y%, r, side] where y%: 0=top(high price), 100=bottom(low price)
-const bubbles = [
-  [9,  48, 22, 'bid'], [14, 47, 8,  'ask'], [30, 43, 10, 'bid'],
-  [36, 40, 7,  'bid'], [44, 39, 14, 'bid'], [50, 38, 18, 'bid'],
-  [55, 39, 10, 'ask'], [58, 38, 6,  'bid'], [63, 39, 16, 'bid'],
-  [67, 41, 8,  'ask'], [72, 39, 20, 'ask'], [75, 40, 8,  'bid'],
-  [80, 40, 7,  'bid'], [84, 40, 12, 'bid'], [88, 37, 9,  'ask'],
-  [37, 37, 6,  'ask'], [46, 37, 8,  'ask'], [68, 42, 5,  'bid'],
-  [22, 42, 6,  'bid'], [60, 50, 6,  'bid'], [42, 51, 7,  'ask'],
-  [55, 53, 26, 'ask'], [78, 52, 5,  'bid'], [85, 52, 8,  'bid'],
-  [92, 53, 7,  'bid'], [95, 52, 8,  'bid'], [18, 51, 9,  'ask'],
-  [72, 46, 5,  'bid'], [35, 46, 5,  'ask'], [50, 55, 5,  'ask'],
-];
-
-// Order book — asks top, bids bottom
-const obAsks = [
-  { price: '72390.0', vol: '4.38',  pct: 85 },
-  { price: '72385.0', vol: '4.91',  pct: 95 },
-  { price: '72380.0', vol: '0.985', pct: 19 },
-];
-const obBids = [
-  { price: '72375.0', vol: '1.28',  leftVol: '1.18', pct: 25 },
-  { price: '72370.0', vol: '2.55',  leftVol: '2.55', pct: 50 },
-  { price: '72365.0', vol: '3.71',  leftVol: '3.71', pct: 72 },
-  { price: '72360.0', vol: '0.0030',leftVol: '',     pct: 1  },
-];
----
-
-<section class="relative min-h-screen flex flex-col items-center justify-center pt-20 pb-16 px-4 overflow-hidden">
-  <!-- BG -->
-  <div class="absolute inset-0" style="background:radial-gradient(ellipse 80% 50% at 50% -10%,rgba(38,166,154,0.07),transparent),#0a0b0f;"></div>
-  <div class="absolute inset-0 opacity-20" style="background-image:linear-gradient(rgba(38,166,154,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(38,166,154,0.05) 1px,transparent 1px);background-size:40px 40px;"></div>
-
-  <!-- Hero text -->
-  <div class="relative z-10 text-center max-w-4xl mx-auto mb-10">
-    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border mb-6 text-xs font-mono"
-         style="border-color:rgba(38,166,154,0.35);background:rgba(38,166,154,0.06);color:#26a69a;">
-      <span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background:#26a69a;"></span>
-      Built with Rust · iced GUI · Free to use
+  <!-- Hero Content -->
+  <div class="relative z-10 text-center max-w-5xl mx-auto mb-16">
+    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-accent-green/20 bg-accent-green/5 mb-8 animate-fade-in">
+      <span class="relative flex h-2 w-2">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent-green opacity-75"></span>
+        <span class="relative inline-flex rounded-full h-2 w-2 bg-accent-green"></span>
+      </span>
+      <span class="text-xs font-mono font-medium text-accent-green tracking-wide">V0.1.0 • HIGH PERFORMANCE TRADING</span>
     </div>
-    <h1 class="text-5xl md:text-7xl font-bold tracking-tight mb-5 leading-none" style="color:#c0c0cc;">
-      Professional<br/>
-      <span style="color:#26a69a;">Crypto Scalping</span><br/>
-      Terminal
+
+    <h1 class="text-6xl md:text-8xl font-bold tracking-tighter mb-6 leading-[0.9] text-balance">
+      Precision Trading<br/>
+      <span class="text-transparent bg-clip-text bg-gradient-to-r from-accent-green to-accent-blue">Real-Time Speed</span>
     </h1>
-    <p class="text-lg mb-8 max-w-2xl mx-auto leading-relaxed" style="color:#a0aaba;">
-      Trade across 20+ exchanges with real-time cluster charts, bubble visualization,
-      and hotkey-driven execution — all in a single, blazing-fast desktop app.
+
+    <p class="text-xl md:text-2xl mb-10 max-w-2xl mx-auto leading-relaxed text-text-secondary">
+      Professional crypto scalping terminal built with <span class="text-text-primary font-medium">Rust & Iced</span>.
+      Blazing fast execution, advanced cluster charts, and deep liquidity visualization.
     </p>
-    <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-10">
+
+    <div class="flex flex-col sm:flex-row gap-5 justify-center items-center mb-12">
       <a href="#download"
-         class="px-8 py-3.5 rounded-lg font-bold text-base transition-all hover:opacity-90 hover:scale-105"
-         style="background:#26a69a;color:#0f0f1e;">Download Free</a>
+         class="px-10 py-4 rounded-xl font-bold text-lg transition-all bg-accent-green text-bg-primary hover:shadow-[0_0_20px_rgba(0,212,160,0.4)] hover:scale-105 active:scale-95">
+        Get Started Free
+      </a>
       <a href="#features"
-         class="px-8 py-3.5 rounded-lg border font-medium text-base transition-all"
-         style="border-color:#333348;color:#a0aaba;">Explore Features</a>
+         class="px-10 py-4 rounded-xl border border-border bg-bg-card/50 backdrop-blur-sm font-medium text-lg transition-all hover:bg-bg-hover hover:border-border-light">
+        View Features
+      </a>
     </div>
-    <div class="flex flex-wrap justify-center gap-10">
-      {[['20+','Exchanges'],['24+','Widget Types'],['<1ms','Latency'],['Free','Forever']].map(([v,l]) => (
-        <div class="text-center">
-          <div class="text-3xl font-bold font-mono" style="color:#26a69a;">{v}</div>
-          <div class="text-sm mt-1" style="color:#a0aaba;">{l}</div>
+
+    <div class="flex flex-wrap justify-center gap-12 py-4 border-y border-border/50">
+      {[
+        ['20+','Exchanges'],
+        ['<1ms','Latency'],
+        ['Rust','Backend'],
+        ['0%','Fees']
+      ].map(([v,l]) => (
+        <div class="flex flex-col items-center">
+          <div class="text-4xl font-bold font-mono text-text-primary tracking-tighter whitespace-nowrap">{v}</div>
+          <div class="text-xs font-medium text-accent-green/60 uppercase tracking-widest mt-1">{l}</div>
         </div>
       ))}
     </div>
   </div>
 
   <!-- ═══════════════════════════ TERMINAL MOCKUP ═══════════════════════════ -->
-  <div class="relative z-10 w-full max-w-[1280px] mx-auto terminal-float" aria-hidden="true">
-    <div class="rounded-xl overflow-hidden border"
-         style="border-color:#2a2b3d;background:#13141e;box-shadow:0 40px 100px rgba(0,0,0,0.8),0 0 50px rgba(38,166,154,0.04);">
+  <div class="relative z-10 w-full max-w-[1200px] mx-auto terminal-float px-2 sm:px-0" aria-hidden="true">
+    <!-- Glow behind terminal -->
+    <div class="absolute -inset-4 bg-accent-green/10 blur-3xl opacity-50 rounded-[2rem]"></div>
 
-      <!-- ── macOS window chrome + title ── -->
-      <div class="flex items-center justify-between px-3"
-           style="height:32px;background:#0e0f17;border-bottom:1px solid #1e1f2e;">
-        <div class="flex gap-1.5">
-          <div class="w-3 h-3 rounded-full" style="background:#ff5f57;"></div>
-          <div class="w-3 h-3 rounded-full" style="background:#febc2e;"></div>
-          <div class="w-3 h-3 rounded-full" style="background:#28c840;"></div>
+    <div class="relative rounded-2xl overflow-hidden border border-white/10 bg-[#0e0f17] shadow-[0_40px_100px_rgba(0,0,0,0.9)]">
+
+      <!-- ── macOS window chrome ── -->
+      <div class="flex items-center justify-between px-4 py-2.5 bg-[#0a0b0f] border-b border-white/5">
+        <div class="flex gap-2">
+          <div class="w-3 h-3 rounded-full bg-[#ff5f57] border border-black/10"></div>
+          <div class="w-3 h-3 rounded-full bg-[#febc2e] border border-black/10"></div>
+          <div class="w-3 h-3 rounded-full bg-[#28c840] border border-black/10"></div>
         </div>
-        <span style="font-size:11px;color:#a0aaba;font-family:sans-serif;">Scalper | BTCUSDT</span>
-        <div style="width:52px;"></div>
+        <div class="absolute left-1/2 -translate-x-1/2 flex items-center gap-2 px-3 py-1 bg-white/5 rounded-md border border-white/5">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+            <path d="M2 12L6 6L9 9L12 4L14 6" stroke="#00d4a0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="text-[10px] uppercase tracking-widest text-[#8695a8] font-mono">MarketMaker Scalper • BTCUSDT</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="w-4 h-4 rounded bg-white/5"></div>
+        </div>
       </div>
 
       <!-- ── Tab bar ── -->
-      <div class="flex items-center justify-between px-2"
-           style="height:34px;background:#0e0f17;border-bottom:1px solid #1e1f2e;">
-        <!-- Tabs -->
-        <div class="flex items-center gap-1">
-          {['Tab 1','Tab 3','Tab 4'].map(t => (
-            <div class="flex items-center gap-1 px-2.5 rounded"
-                 style="height:24px;background:#1a1b28;color:#a0aaba;font-size:10px;font-family:monospace;">
-              {t} <span style="color:#8695a8;margin-left:2px;">×</span>
+      <div class="flex items-center justify-between px-2 bg-[#0e0f17] border-b border-white/5 h-10">
+        <div class="flex items-center gap-1.5 h-full pt-1">
+          {['Binance','Bybit','OKX'].map((t, i) => (
+            <div class={`flex items-center gap-2 px-3 h-full rounded-t-lg text-[10px] font-mono border-x border-t transition-colors ${i===0 ? 'bg-[#13141e] border-white/10 text-text-primary' : 'bg-transparent border-transparent text-[#8695a8] hover:text-text-primary'}`}>
+              <div class={`w-1.5 h-1.5 rounded-full ${i===0 ? 'bg-accent-green' : 'bg-white/10'}`}></div>
+              {t}
             </div>
           ))}
-          <!-- Active tab -->
-          <div class="flex items-center gap-1 px-2.5 rounded"
-                               style="height:24px;background:#252736;color:#e8eaf0;font-size:10px;font-family:monospace;border:1px solid #333348;">
-            Tab 5 <span style="color:#8695a8;margin-left:2px;">×</span>
-          </div>
-          <div class="flex items-center justify-center rounded ml-1"
-               style="height:24px;width:22px;background:#1a1b28;color:#a0aaba;font-size:13px;">+</div>
+          <div class="px-2 text-[#8695a8] hover:text-text-primary cursor-pointer">+</div>
         </div>
-        <!-- Layout grid buttons + fps -->
-        <div class="flex items-center gap-1" style="font-size:9px;font-family:monospace;">
-          <!-- Layout buttons -->
-          {['1×1','2×1','3×1','4×1','8×1','2×2','3×2','4×2','2×3','3×3'].map((b,i) => (
-            <span class="px-1.5 rounded"
-                  style={`height:20px;line-height:20px;color:${i===0?'#ffffff':'#a0aaba'};background:${i===0?'#333359':'rgba(255,255,255,0.04)'};`}>
-              {b}
-            </span>
-          ))}
-          <span style="color:#26a69a;margin-left:6px;">25 mps</span>
-          <span style="color:#a0aaba;"> | </span>
-          <span style="color:#a0aaba;">26 fps</span>
-          <span class="rounded px-1.5 ml-1"
-                style="height:20px;line-height:20px;background:rgba(255,255,255,0.06);color:#a0aaba;">?</span>
+        <div class="flex items-center gap-3 pr-2">
+          <div class="flex items-center gap-1 px-2 py-1 bg-white/5 rounded border border-white/5 text-[9px] font-mono">
+            <span class="text-accent-green tracking-tighter">60.0 FPS</span>
+            <span class="text-[#8695a8]">|</span>
+            <span class="text-accent-blue tracking-tighter">1.2 MS</span>
+          </div>
         </div>
       </div>
 
       <!-- ── Toolbar ── -->
-      <div class="flex items-center gap-3 px-3"
-           style="height:30px;background:#0e0f17;border-bottom:1px solid #1e1f2e;font-size:10px;font-family:monospace;">
-        <span style="color:#26a69a;">WS: OK</span>
-        <span style="color:#e8eaf0;font-weight:600;">BTCUSDT</span>
-        <span style="color:#a0aaba;">Last:</span>
-        <span style="color:#e8eaf0;">72377.4</span>
-        <span style="color:#a0aaba;">Mode:</span>
-        <span style="color:#e8eaf0;">AUTO</span>
-        <span class="px-2 rounded" style="background:rgba(255,255,255,0.07);color:#e8eaf0;">Center</span>
-        <span style="color:#a0aaba;">Step:</span>
-        <span style="color:#e8eaf0;">5</span>
-        <span style="color:#a0aaba;">Msgs:</span>
-        <span style="color:#e8eaf0;">1096</span>
-        <div style="flex:1;"></div>
-        <!-- Widget type buttons — Clst active -->
-        {[['Clst',true],['Tick',false],['BbI',false],['OB',false],['Tape',false],['Bot',false]].map(([b,a]) => (
-          <span class="px-2 rounded"
-                style={`height:20px;line-height:20px;color:${a?'#ffffff':'#a0aaba'};background:${a?'#333359':'rgba(255,255,255,0.04)'};border:${a?'1px solid #444566':'1px solid transparent'};`}>
-            {b}
-          </span>
-        ))}
+      <div class="flex items-center gap-4 px-4 h-10 bg-[#13141e] border-b border-white/5 text-[10px] font-mono">
+        <div class="flex items-center gap-2">
+          <span class="text-accent-green">●</span>
+          <span class="text-[#a0aaba]">CONNECTION:</span>
+          <span class="text-text-primary font-bold">STABLE</span>
+        </div>
+        <div class="h-4 w-[1px] bg-white/10"></div>
+        <div class="flex items-center gap-2">
+           <span class="text-[#a0aaba]">MARKET:</span>
+           <span class="px-1.5 py-0.5 bg-accent-green/10 text-accent-green rounded border border-accent-green/20">BTCUSDT</span>
+        </div>
+        <div class="flex items-center gap-2">
+           <span class="text-[#a0aaba]">PRICE:</span>
+           <span class="text-accent-green font-bold">72,394.20</span>
+        </div>
+        <div class="flex-1"></div>
+        <div class="flex items-center gap-1">
+          {['Cluster','Tick','OB','Tape','Chart'].map((b, i) => (
+            <button class={`px-2.5 py-1 rounded transition-all ${i===0 ? 'bg-accent-green text-bg-primary font-bold shadow-[0_0_10px_rgba(0,212,160,0.3)]' : 'text-[#8695a8] hover:bg-white/5'}`}>{b}</button>
+          ))}
+        </div>
       </div>
 
-      <!-- ── Main panels ── -->
-      <div style="display:grid;grid-template-columns:300px 1fr 230px;height:530px;">
-
-        <!-- ═══ LEFT: Cluster table ═══ -->
-        <div class="ct-panel">
-          <div class="ct-header">
-            {['Vol','Cnt','Δ','Cnt','Vol'].map(h => <span>{h}</span>)}
-          </div>
-          <div>
-            {clusterAsks.map((row) => (
-              <div class={`ct-row${row[5]?' ct-hi':''}`}>
-                {[row[0],row[1],row[2],row[3],row[4]].map((v, ci) => (
-                  <span class={`c${ci}${row[5]?' cw':v===''?' cv':''}`}>{v}</span>
-                ))}
-              </div>
-            ))}
-          </div>
-          <div class="ct-sep"></div>
-          <div>
-            {clusterBids.map((row) => (
-              <div class={`ct-row${row[5]?' ct-hi':''}`}>
-                {[row[0],row[1],row[2],row[3],row[4]].map((v, ci) => (
-                  <span class={`c${ci}${row[5]?' cw':v===''?' cv':''}`}>{v}</span>
-                ))}
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <!-- ═══ CENTER: Bubble chart ═══ -->
-        <div style="background:#13141e;border-right:1px solid #1e1f2e;position:relative;overflow:hidden;">
-          <svg width="100%" height="100%" viewBox="0 0 820 530" preserveAspectRatio="xMidYMid meet" style="display:block;">
-            <rect width="820" height="530" fill="#13141e"/>
-
-            <!-- Horizontal grid lines -->
-            {[0,1,2,3,4,5,6,7,8,9].map(i => (
-              <line x1="0" y1={i/9*530} x2="820" y2={i/9*530} stroke="#1e1f2e" stroke-width="0.5"/>
-            ))}
-
-            <!-- Bubbles -->
-            {bubbles.map(b => {
-              const bx = (b[0] as number) / 100 * 780 + 20;
-              const by = (b[1] as number) / 100 * 530;
-              const br = b[2] as number;
-              const isBid = b[3] === 'bid';
-              return (
-                <circle
-                  cx={bx} cy={by} r={br}
-                  fill={isBid ? 'rgba(38,166,154,0.55)' : 'rgba(239,83,80,0.55)'}
-                  stroke={isBid ? 'rgba(38,166,154,0.8)' : 'rgba(239,83,80,0.8)'}
-                  stroke-width="0.5"
-                />
-              );
-            })}
-
-            <!-- Price axis labels on right -->
-            {[72467,72447,72427,72407,72387,72367,72347,72327,72307,72287].map((p,i) => (
-              <text x="815" y={10 + i*53} fill="#a0aaba" font-size="9" font-family="monospace" text-anchor="end">{p}.4</text>
-            ))}
-          </svg>
-        </div>
-
-        <!-- ═══ RIGHT: Order book ═══ -->
-        <div style="background:#13141e;display:flex;flex-direction:column;">
-          <!-- Column header -->
-          <div style="display:flex;justify-content:space-between;padding:0 6px;height:18px;border-bottom:1px solid #1e1f2e;align-items:center;">
-            <span style="font-size:8px;color:#8695a8;font-family:monospace;">Vol</span>
-            <span style="font-size:8px;color:#8695a8;font-family:monospace;">Price</span>
-            <span style="font-size:8px;color:#8695a8;font-family:monospace;">Size</span>
-          </div>
-
-          <!-- Spacer to push to vertical center -->
-          <div style="flex:1;"></div>
-
-          <!-- ASK rows -->
-          {obAsks.map(row => (
-            <div style="position:relative;height:26px;display:flex;align-items:center;justify-content:space-between;padding:0 6px;overflow:hidden;">
-              <!-- Bar from right -->
-              <div style={`position:absolute;right:0;top:2px;bottom:2px;background:rgba(239,83,80,0.35);width:${row.pct}%;`}></div>
-              <span style="font-size:10px;font-family:monospace;color:#ef5350;z-index:1;">{row.price}</span>
-              <span style="font-size:10px;font-family:monospace;color:#ffffff;z-index:1;">{row.vol}</span>
+      <!-- ── Main Editor Area ── -->
+      <div class="grid grid-cols-[1fr_320px] h-[580px] bg-[#0a0b0f]">
+        <!-- Left: Workspace -->
+        <div class="grid grid-cols-2 grid-rows-2 p-1 gap-1 border-r border-white/5">
+          <!-- Widget 1: Clusters -->
+          <div class="bg-[#13141e] rounded-lg border border-white/5 overflow-hidden flex flex-col shadow-inner">
+            <div class="px-2 py-1 bg-[#0a0b0f] flex items-center justify-between border-b border-white/5">
+               <span class="text-[9px] font-mono text-[#8695a8] uppercase tracking-widest">Cluster Chart</span>
+               <div class="flex gap-1">
+                 <div class="w-1.5 h-1.5 rounded-full bg-white/10"></div>
+               </div>
             </div>
-          ))}
-
-          <!-- Current price separator -->
-          <div style="height:1px;background:#333348;"></div>
-
-          <!-- BID rows -->
-          {obBids.map(row => (
-            <div style="position:relative;height:26px;display:flex;align-items:center;justify-content:space-between;padding:0 6px;overflow:hidden;">
-              <!-- Bar from right -->
-              <div style={`position:absolute;right:0;top:2px;bottom:2px;background:rgba(38,166,154,0.35);width:${row.pct}%;`}></div>
-              {row.leftVol
-                ? <span style="font-size:10px;font-family:monospace;color:#26a69a;z-index:1;min-width:32px;">{row.leftVol}</span>
-                : <span style="min-width:32px;"></span>
-              }
-              <span style="font-size:10px;font-family:monospace;color:#26a69a;z-index:1;">{row.price}</span>
-              <span style="font-size:10px;font-family:monospace;color:#ffffff;z-index:1;">{row.vol}</span>
+            <div class="flex-1 p-2 font-mono text-[9px] overflow-hidden">
+               <div class="flex justify-between border-b border-white/5 pb-1 mb-1 text-[#8695a8]">
+                 <span>PRICE</span>
+                 <span>VOLUME</span>
+                 <span>DELTA</span>
+               </div>
+               {[...Array(15)].map((_, i) => (
+                 <div class={`flex justify-between py-0.5 px-1 rounded ${i === 7 ? 'bg-accent-green/20 text-accent-green' : 'text-[#a0aaba]/70'}`}>
+                    <span>72,39{9-i}.{i}</span>
+                    <span class="text-right">{(Math.random()*10).toFixed(2)}</span>
+                    <span class={i % 3 === 0 ? 'text-accent-red font-bold' : 'text-accent-green font-bold'}>{(Math.random()*5 - 2).toFixed(2)}</span>
+                 </div>
+               ))}
             </div>
-          ))}
-
-          <!-- Spacer -->
-          <div style="flex:1;"></div>
+          </div>
+          <!-- Widget 2: Bubble Chart -->
+          <div class="bg-[#13141e] rounded-lg border border-white/5 overflow-hidden flex flex-col bg-grid p-2">
+            <div class="flex-1 relative overflow-hidden">
+               <svg class="w-full h-full" viewBox="0 0 200 200">
+                  <circle cx="50" cy="80" r="15" fill="#00d4a0" fill-opacity="0.3" stroke="#00d4a0" stroke-width="1" />
+                  <circle cx="120" cy="40" r="25" fill="#ff4757" fill-opacity="0.3" stroke="#ff4757" stroke-width="1" />
+                  <circle cx="150" cy="130" r="10" fill="#00d4a0" fill-opacity="0.5" stroke="#00d4a0" stroke-width="1" />
+                  <circle cx="80" cy="150" r="30" fill="#ff4757" fill-opacity="0.2" stroke="#ff4757" stroke-width="1" />
+                  <circle cx="100" cy="100" r="5" fill="#ffffff" fill-opacity="0.5" />
+               </svg>
+            </div>
+          </div>
+          <!-- Widget 3: Tape -->
+          <div class="bg-[#13141e] rounded-lg border border-white/5 overflow-hidden flex flex-col">
+             <div class="px-2 py-1 bg-[#0a0b0f] flex items-center justify-between border-b border-white/5 text-[9px] font-mono text-[#8695a8]">TAPE</div>
+             <div class="flex-1 p-2 font-mono text-[9px]">
+               {[...Array(12)].map((_, i) => (
+                 <div class="flex justify-between border-b border-white/5 py-1">
+                   <span class={i % 2 === 0 ? 'text-accent-green' : 'text-accent-red'}>{i % 2 === 0 ? 'BUY' : 'SELL'}</span>
+                   <span class="text-[#a0aaba]">{(Math.random()*2).toFixed(3)} BTC</span>
+                   <span class="text-text-primary">22:04:{(30-i).toString().padStart(2, '0')}</span>
+                 </div>
+               ))}
+             </div>
+          </div>
+          <!-- Widget 4: Positions -->
+          <div class="bg-[#13141e] rounded-lg border border-white/5 overflow-hidden flex flex-col">
+            <div class="px-2 py-1 bg-[#0a0b0f] flex items-center justify-between border-b border-white/5 text-[9px] font-mono text-[#8695a8]">POSITIONS</div>
+            <div class="flex-1 p-4 flex flex-col items-center justify-center gap-2">
+               <span class="text-[10px] text-[#a0aaba]">BTCUSDT LONG</span>
+               <span class="text-2xl font-bold font-mono text-accent-green">+ 12.42%</span>
+               <div class="w-full h-1 bg-white/5 rounded-full overflow-hidden">
+                 <div class="h-full bg-accent-green w-[70%]"></div>
+               </div>
+            </div>
+          </div>
         </div>
 
-      </div><!-- end panels grid -->
+        <!-- Right: Order Book -->
+        <div class="bg-[#13141e] flex flex-col border-l border-white/5 shadow-2xl">
+          <div class="h-8 bg-[#0a0b0f] border-b border-white/5 flex items-center justify-between px-3 text-[9px] font-mono text-[#8695a8]">
+            <span>ORDER BOOK</span>
+            <span class="text-accent-green">DEPTH: 100</span>
+          </div>
+          <div class="flex-1 flex flex-col font-mono text-[10px] p-2">
+            <!-- Asks -->
+            <div class="flex flex-col-reverse gap-[1px]">
+              {[...Array(12)].map((_, i) => (
+                <div class="relative flex justify-between px-2 py-0.5 group hover:bg-white/5 cursor-pointer">
+                  <div class="absolute right-0 top-0 bottom-0 bg-accent-red/10" style={`width: ${Math.random()*80}%`}></div>
+                  <span class="text-accent-red z-10 font-bold">72,40{i}.5</span>
+                  <span class="text-text-primary z-10">{(Math.random()*4).toFixed(3)}</span>
+                </div>
+              ))}
+            </div>
+            <!-- Spread -->
+            <div class="my-2 py-1 border-y border-white/10 flex justify-between items-center px-2 bg-white/5 rounded">
+               <span class="text-[11px] font-bold text-text-primary italic tracking-widest">72,394.2</span>
+               <span class="text-[9px] text-[#8695a8]">SPREAD: 1.5</span>
+            </div>
+            <!-- Bids -->
+            <div class="flex flex-col gap-[1px]">
+              {[...Array(15)].map((_, i) => (
+                <div class="relative flex justify-between px-2 py-0.5 group hover:bg-white/5 cursor-pointer">
+                  <div class="absolute right-0 top-0 bottom-0 bg-accent-green/10" style={`width: ${Math.random()*80}%`}></div>
+                  <span class="text-accent-green z-10 font-bold">72,38{9-i}.2</span>
+                  <span class="text-text-primary z-10">{(Math.random()*6).toFixed(3)}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
 
       <!-- ── Status bar ── -->
-      <div style="height:20px;background:#0e0f17;border-top:1px solid #1e1f2e;display:flex;align-items:center;padding:0 8px;gap:12px;">
-        <span style="font-size:8px;font-family:monospace;color:#8695a8;">goes/bucktesting -cache.hid...</span>
+      <div class="h-7 bg-[#0a0b0f] border-t border-white/5 flex items-center px-4 gap-6 text-[9px] font-mono">
+        <div class="flex items-center gap-2">
+           <span class="w-1.5 h-1.5 rounded-full bg-accent-green animate-pulse"></span>
+           <span class="text-[#8695a8]">PRODUCER RUNNING</span>
+        </div>
+        <div class="flex items-center gap-2">
+           <span class="text-[#a0aaba]">LATENCY:</span>
+           <span class="text-accent-green font-bold">0.42ms</span>
+        </div>
+        <div class="flex-1"></div>
+        <div class="text-[#8695a8]">SYSTEM LOAD: 4%</div>
       </div>
 
     </div><!-- end terminal -->
@@ -310,21 +243,29 @@ const obBids = [
 </section>
 
 <style>
-  .terminal-float { animation: termFloat 6s ease-in-out infinite; }
-  @keyframes termFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+  .terminal-float {
+    animation: termFloat 8s ease-in-out infinite;
+    perspective: 1000px;
+  }
+  @keyframes termFloat {
+    0%, 100% { transform: translateY(0) rotateX(1deg) rotateY(-0.5deg); }
+    50% { transform: translateY(-15px) rotateX(-1deg) rotateY(0.5deg); }
+  }
 
-  /* Cluster table */
-  .ct-panel { background:#13141e; border-right:1px solid #1e1f2e; overflow:hidden; }
-  .ct-header { display:grid; grid-template-columns:repeat(5,1fr); height:18px; border-bottom:1px solid #1e1f2e; align-items:center; padding:0 2px; }
-  .ct-header span { font-size:8px; color:#8695a8; font-family:monospace; text-align:center; }
-  .ct-row { display:grid; grid-template-columns:repeat(5,1fr); height:19px; align-items:center; padding:0 2px; }
-  .ct-hi { background:rgba(239,83,80,0.28); }
-  .ct-sep { height:1px; background:#333348; }
-  /* columns: 0,1 = bid (right-align, green); 2 = center (neutral); 3,4 = ask (left-align, red) */
-  .ct-row span { font-size:10px; font-family:monospace; padding:0 2px; }
-  .c0,.c1 { text-align:right; color:#26a69a; }
-  .c2 { text-align:center; color:#c0c0cc; }
-  .c3,.c4 { text-align:left; color:#ff6b6b; }
-  .cw { color:#ffffff !important; } /* highlighted row override */
-  .cv { color:transparent; }        /* empty cell */
+  .bg-grid {
+    background-image:
+      linear-gradient(rgba(0, 212, 160, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 212, 160, 0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+
+  /* Smooth reveal for typography */
+  @keyframes fade-in {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-fade-in {
+    animation: fade-in 0.8s ease-out forwards;
+  }
 </style>
+
