@@ -1,7 +1,7 @@
 ---
 // Colors from scalper-iced screenshot
 // BG: ~#13141e  PANEL: ~#16172a  BID: #26a69a  ASK: #ef5350
-// TEXT: #c0c0cc  DIM: #808090  YELLOW: #ffd700  GRID: #1e1f2e
+// TEXT: #c0c0cc  DIM: #a0aaba  YELLOW: #ffd700  GRID: #1e1f2e
 
 // Cluster table data — [left_vol, left_vol2, center_val, right_vol2, right_vol, highlight]
 // above yellow line = ask levels (top → worst ask, bottom → best ask)
@@ -93,7 +93,7 @@ const obBids = [
       <span style="color:#26a69a;">Crypto Scalping</span><br/>
       Terminal
     </h1>
-    <p class="text-lg mb-8 max-w-2xl mx-auto leading-relaxed" style="color:#808090;">
+    <p class="text-lg mb-8 max-w-2xl mx-auto leading-relaxed" style="color:#a0aaba;">
       Trade across 20+ exchanges with real-time cluster charts, bubble visualization,
       and hotkey-driven execution — all in a single, blazing-fast desktop app.
     </p>
@@ -103,13 +103,13 @@ const obBids = [
          style="background:#26a69a;color:#0f0f1e;">Download Free</a>
       <a href="#features"
          class="px-8 py-3.5 rounded-lg border font-medium text-base transition-all"
-         style="border-color:#333348;color:#808090;">Explore Features</a>
+         style="border-color:#333348;color:#a0aaba;">Explore Features</a>
     </div>
     <div class="flex flex-wrap justify-center gap-10">
       {[['20+','Exchanges'],['24+','Widget Types'],['<1ms','Latency'],['Free','Forever']].map(([v,l]) => (
         <div class="text-center">
           <div class="text-3xl font-bold font-mono" style="color:#26a69a;">{v}</div>
-          <div class="text-sm mt-1" style="color:#808090;">{l}</div>
+          <div class="text-sm mt-1" style="color:#a0aaba;">{l}</div>
         </div>
       ))}
     </div>
@@ -128,7 +128,7 @@ const obBids = [
           <div class="w-3 h-3 rounded-full" style="background:#febc2e;"></div>
           <div class="w-3 h-3 rounded-full" style="background:#28c840;"></div>
         </div>
-        <span style="font-size:11px;color:#808090;font-family:sans-serif;">Scalper | BTCUSDT</span>
+        <span style="font-size:11px;color:#a0aaba;font-family:sans-serif;">Scalper | BTCUSDT</span>
         <div style="width:52px;"></div>
       </div>
 
@@ -139,32 +139,32 @@ const obBids = [
         <div class="flex items-center gap-1">
           {['Tab 1','Tab 3','Tab 4'].map(t => (
             <div class="flex items-center gap-1 px-2.5 rounded"
-                 style="height:24px;background:#1a1b28;color:#808090;font-size:10px;font-family:monospace;">
-              {t} <span style="color:#555;margin-left:2px;">×</span>
+                 style="height:24px;background:#1a1b28;color:#a0aaba;font-size:10px;font-family:monospace;">
+              {t} <span style="color:#8695a8;margin-left:2px;">×</span>
             </div>
           ))}
           <!-- Active tab -->
           <div class="flex items-center gap-1 px-2.5 rounded"
-               style="height:24px;background:#252736;color:#c0c0cc;font-size:10px;font-family:monospace;border:1px solid #333348;">
-            Tab 5 <span style="color:#666;margin-left:2px;">×</span>
+                               style="height:24px;background:#252736;color:#e8eaf0;font-size:10px;font-family:monospace;border:1px solid #333348;">
+            Tab 5 <span style="color:#8695a8;margin-left:2px;">×</span>
           </div>
           <div class="flex items-center justify-center rounded ml-1"
-               style="height:24px;width:22px;background:#1a1b28;color:#808090;font-size:13px;">+</div>
+               style="height:24px;width:22px;background:#1a1b28;color:#a0aaba;font-size:13px;">+</div>
         </div>
         <!-- Layout grid buttons + fps -->
         <div class="flex items-center gap-1" style="font-size:9px;font-family:monospace;">
           <!-- Layout buttons -->
           {['1×1','2×1','3×1','4×1','8×1','2×2','3×2','4×2','2×3','3×3'].map((b,i) => (
             <span class="px-1.5 rounded"
-                  style={`height:20px;line-height:20px;color:${i===0?'#ffffff':'#808090'};background:${i===0?'#333359':'rgba(255,255,255,0.04)'};`}>
+                  style={`height:20px;line-height:20px;color:${i===0?'#ffffff':'#a0aaba'};background:${i===0?'#333359':'rgba(255,255,255,0.04)'};`}>
               {b}
             </span>
           ))}
           <span style="color:#26a69a;margin-left:6px;">25 mps</span>
-          <span style="color:#808090;"> | </span>
-          <span style="color:#808090;">26 fps</span>
+          <span style="color:#a0aaba;"> | </span>
+          <span style="color:#a0aaba;">26 fps</span>
           <span class="rounded px-1.5 ml-1"
-                style="height:20px;line-height:20px;background:rgba(255,255,255,0.06);color:#808090;">?</span>
+                style="height:20px;line-height:20px;background:rgba(255,255,255,0.06);color:#a0aaba;">?</span>
         </div>
       </div>
 
@@ -172,21 +172,21 @@ const obBids = [
       <div class="flex items-center gap-3 px-3"
            style="height:30px;background:#0e0f17;border-bottom:1px solid #1e1f2e;font-size:10px;font-family:monospace;">
         <span style="color:#26a69a;">WS: OK</span>
-        <span style="color:#c0c0cc;font-weight:600;">BTCUSDT</span>
-        <span style="color:#808090;">Last:</span>
-        <span style="color:#c0c0cc;">72377.4</span>
-        <span style="color:#808090;">Mode:</span>
-        <span style="color:#c0c0cc;">AUTO</span>
-        <span class="px-2 rounded" style="background:rgba(255,255,255,0.07);color:#c0c0cc;">Center</span>
-        <span style="color:#808090;">Step:</span>
-        <span style="color:#c0c0cc;">5</span>
-        <span style="color:#808090;">Msgs:</span>
-        <span style="color:#c0c0cc;">1096</span>
+        <span style="color:#e8eaf0;font-weight:600;">BTCUSDT</span>
+        <span style="color:#a0aaba;">Last:</span>
+        <span style="color:#e8eaf0;">72377.4</span>
+        <span style="color:#a0aaba;">Mode:</span>
+        <span style="color:#e8eaf0;">AUTO</span>
+        <span class="px-2 rounded" style="background:rgba(255,255,255,0.07);color:#e8eaf0;">Center</span>
+        <span style="color:#a0aaba;">Step:</span>
+        <span style="color:#e8eaf0;">5</span>
+        <span style="color:#a0aaba;">Msgs:</span>
+        <span style="color:#e8eaf0;">1096</span>
         <div style="flex:1;"></div>
         <!-- Widget type buttons — Clst active -->
         {[['Clst',true],['Tick',false],['BbI',false],['OB',false],['Tape',false],['Bot',false]].map(([b,a]) => (
           <span class="px-2 rounded"
-                style={`height:20px;line-height:20px;color:${a?'#ffffff':'#808090'};background:${a?'#333359':'rgba(255,255,255,0.04)'};border:${a?'1px solid #444566':'1px solid transparent'};`}>
+                style={`height:20px;line-height:20px;color:${a?'#ffffff':'#a0aaba'};background:${a?'#333359':'rgba(255,255,255,0.04)'};border:${a?'1px solid #444566':'1px solid transparent'};`}>
             {b}
           </span>
         ))}
@@ -249,7 +249,7 @@ const obBids = [
 
             <!-- Price axis labels on right -->
             {[72467,72447,72427,72407,72387,72367,72347,72327,72307,72287].map((p,i) => (
-              <text x="815" y={10 + i*53} fill="#808090" font-size="9" font-family="monospace" text-anchor="end">{p}.4</text>
+              <text x="815" y={10 + i*53} fill="#a0aaba" font-size="9" font-family="monospace" text-anchor="end">{p}.4</text>
             ))}
           </svg>
         </div>
@@ -258,9 +258,9 @@ const obBids = [
         <div style="background:#13141e;display:flex;flex-direction:column;">
           <!-- Column header -->
           <div style="display:flex;justify-content:space-between;padding:0 6px;height:18px;border-bottom:1px solid #1e1f2e;align-items:center;">
-            <span style="font-size:8px;color:#555;font-family:monospace;">Vol</span>
-            <span style="font-size:8px;color:#555;font-family:monospace;">Price</span>
-            <span style="font-size:8px;color:#555;font-family:monospace;">Size</span>
+            <span style="font-size:8px;color:#8695a8;font-family:monospace;">Vol</span>
+            <span style="font-size:8px;color:#8695a8;font-family:monospace;">Price</span>
+            <span style="font-size:8px;color:#8695a8;font-family:monospace;">Size</span>
           </div>
 
           <!-- Spacer to push to vertical center -->
@@ -301,7 +301,7 @@ const obBids = [
 
       <!-- ── Status bar ── -->
       <div style="height:20px;background:#0e0f17;border-top:1px solid #1e1f2e;display:flex;align-items:center;padding:0 8px;gap:12px;">
-        <span style="font-size:8px;font-family:monospace;color:#555;">goes/bucktesting -cache.hid...</span>
+        <span style="font-size:8px;font-family:monospace;color:#8695a8;">goes/bucktesting -cache.hid...</span>
       </div>
 
     </div><!-- end terminal -->
@@ -316,7 +316,7 @@ const obBids = [
   /* Cluster table */
   .ct-panel { background:#13141e; border-right:1px solid #1e1f2e; overflow:hidden; }
   .ct-header { display:grid; grid-template-columns:repeat(5,1fr); height:18px; border-bottom:1px solid #1e1f2e; align-items:center; padding:0 2px; }
-  .ct-header span { font-size:8px; color:#555; font-family:monospace; text-align:center; }
+  .ct-header span { font-size:8px; color:#8695a8; font-family:monospace; text-align:center; }
   .ct-row { display:grid; grid-template-columns:repeat(5,1fr); height:19px; align-items:center; padding:0 2px; }
   .ct-hi { background:rgba(239,83,80,0.28); }
   .ct-sep { height:1px; background:#333348; }
@@ -324,7 +324,7 @@ const obBids = [
   .ct-row span { font-size:10px; font-family:monospace; padding:0 2px; }
   .c0,.c1 { text-align:right; color:#26a69a; }
   .c2 { text-align:center; color:#c0c0cc; }
-  .c3,.c4 { text-align:left; color:#ef5350; }
+  .c3,.c4 { text-align:left; color:#ff6b6b; }
   .cw { color:#ffffff !important; } /* highlighted row override */
   .cv { color:transparent; }        /* empty cell */
 </style>
