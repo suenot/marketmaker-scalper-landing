@@ -53,191 +53,20 @@
     </div>
   </div>
 
-  <!-- ═══════════════════════════ TERMINAL MOCKUP ═══════════════════════════ -->
-  <div class="relative z-10 w-full max-w-[1200px] mx-auto terminal-float px-2 sm:px-0" aria-hidden="true">
+  <!-- ═══════════════════════════ TERMINAL SCREENSHOT ═══════════════════════════ -->
+  <div class="relative z-10 w-full max-w-[1200px] mx-auto terminal-float px-2 sm:px-0">
     <!-- Glow behind terminal -->
     <div class="absolute -inset-4 bg-accent-green/10 blur-3xl opacity-50 rounded-[2rem]"></div>
 
-    <div class="relative rounded-2xl overflow-hidden border border-white/10 bg-[#0e0f17] shadow-[0_40px_100px_rgba(0,0,0,0.9)]">
-
-      <!-- ── macOS window chrome ── -->
-      <div class="flex items-center justify-between px-4 py-2.5 bg-[#0a0b0f] border-b border-white/5">
-        <div class="flex gap-2">
-          <div class="w-3 h-3 rounded-full bg-[#ff5f57] border border-black/10"></div>
-          <div class="w-3 h-3 rounded-full bg-[#febc2e] border border-black/10"></div>
-          <div class="w-3 h-3 rounded-full bg-[#28c840] border border-black/10"></div>
-        </div>
-        <div class="absolute left-1/2 -translate-x-1/2 flex items-center gap-2 px-3 py-1 bg-white/5 rounded-md border border-white/5">
-          <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
-            <path d="M2 12L6 6L9 9L12 4L14 6" stroke="#00d4a0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          <span class="text-[10px] uppercase tracking-widest text-[#8695a8] font-mono">MarketMaker Scalper • BTCUSDT</span>
-        </div>
-        <div class="flex items-center gap-2">
-          <div class="w-4 h-4 rounded bg-white/5"></div>
-        </div>
-      </div>
-
-      <!-- ── Tab bar ── -->
-      <div class="flex items-center justify-between px-2 bg-[#0e0f17] border-b border-white/5 h-10">
-        <div class="flex items-center gap-1.5 h-full pt-1">
-          {['Binance','Bybit','OKX'].map((t, i) => (
-            <div class={`flex items-center gap-2 px-3 h-full rounded-t-lg text-[10px] font-mono border-x border-t transition-colors ${i===0 ? 'bg-[#13141e] border-white/10 text-text-primary' : 'bg-transparent border-transparent text-[#a0aaba] hover:text-text-primary'}`}>
-              <div class={`w-1.5 h-1.5 rounded-full ${i===0 ? 'bg-accent-green' : 'bg-white/10'}`}></div>
-              {t}
-            </div>
-          ))}
-          <div class="px-2 text-[#a0aaba] hover:text-text-primary cursor-pointer">+</div>
-        </div>
-        <div class="flex items-center gap-3 pr-2">
-          <div class="flex items-center gap-1 px-2 py-1 bg-white/5 rounded border border-white/5 text-[9px] font-mono">
-            <span class="text-accent-green tracking-tighter">60.0 FPS</span>
-            <span class="text-[#a0aaba]">|</span>
-            <span class="text-accent-blue tracking-tighter">1.2 MS</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- ── Toolbar ── -->
-      <div class="flex items-center gap-4 px-4 h-10 bg-[#13141e] border-b border-white/5 text-[10px] font-mono">
-        <div class="flex items-center gap-2">
-          <span class="text-accent-green">●</span>
-          <span class="text-[#a0aaba]">CONNECTION:</span>
-          <span class="text-text-primary font-bold">STABLE</span>
-        </div>
-        <div class="h-4 w-[1px] bg-white/10"></div>
-        <div class="flex items-center gap-2">
-           <span class="text-[#a0aaba]">MARKET:</span>
-           <span class="px-1.5 py-0.5 bg-accent-green/10 text-accent-green rounded border border-accent-green/20">BTCUSDT</span>
-        </div>
-        <div class="flex items-center gap-2">
-           <span class="text-[#a0aaba]">PRICE:</span>
-           <span class="text-accent-green font-bold">72,394.20</span>
-        </div>
-        <div class="flex-1"></div>
-        <div class="flex items-center gap-1">
-          {['Cluster','Tick','OB','Tape','Chart'].map((b, i) => (
-            <button class={`px-2.5 py-1 rounded transition-all ${i===0 ? 'bg-accent-green text-bg-primary font-bold shadow-[0_0_10px_rgba(0,212,160,0.3)]' : 'text-[#a0aaba] hover:bg-white/5'}`}>{b}</button>
-          ))}
-        </div>
-      </div>
-
-      <!-- ── Main Editor Area ── -->
-      <div class="grid grid-cols-[1fr_320px] h-[580px] bg-[#0a0b0f]">
-        <!-- Left: Workspace -->
-        <div class="grid grid-cols-2 grid-rows-2 p-1 gap-1 border-r border-white/5">
-          <!-- Widget 1: Clusters -->
-          <div class="bg-[#13141e] rounded-lg border border-white/5 overflow-hidden flex flex-col shadow-inner">
-            <div class="px-2 py-1 bg-[#0a0b0f] flex items-center justify-between border-b border-white/5">
-               <span class="text-[9px] font-mono text-[#a0aaba] uppercase tracking-widest">Cluster Chart</span>
-               <div class="flex gap-1">
-                 <div class="w-1.5 h-1.5 rounded-full bg-white/10"></div>
-               </div>
-            </div>
-            <div class="flex-1 p-2 font-mono text-[9px] overflow-hidden">
-               <div class="flex justify-between border-b border-white/5 pb-1 mb-1 text-[#a0aaba]">
-                 <span>PRICE</span>
-                 <span>VOLUME</span>
-                 <span>DELTA</span>
-               </div>
-               {[...Array(15)].map((_, i) => (
-                 <div class={`flex justify-between py-0.5 px-1 rounded ${i === 7 ? 'bg-accent-green/20 text-accent-green' : 'text-[#a0aaba]'}`}>
-                    <span>72,39{9-i}.{i}</span>
-                    <span class="text-right">{(Math.random()*10).toFixed(2)}</span>
-                    <span class={i % 3 === 0 ? 'text-accent-red font-bold' : 'text-accent-green font-bold'}>{(Math.random()*5 - 2).toFixed(2)}</span>
-                 </div>
-               ))}
-            </div>
-          </div>
-          <!-- Widget 2: Bubble Chart -->
-          <div class="bg-[#13141e] rounded-lg border border-white/5 overflow-hidden flex flex-col bg-grid p-2">
-            <div class="flex-1 relative overflow-hidden">
-               <svg class="w-full h-full" viewBox="0 0 200 200">
-                  <circle cx="50" cy="80" r="15" fill="#00d4a0" fill-opacity="0.3" stroke="#00d4a0" stroke-width="1" />
-                  <circle cx="120" cy="40" r="25" fill="#ff4757" fill-opacity="0.3" stroke="#ff4757" stroke-width="1" />
-                  <circle cx="150" cy="130" r="10" fill="#00d4a0" fill-opacity="0.5" stroke="#00d4a0" stroke-width="1" />
-                  <circle cx="80" cy="150" r="30" fill="#ff4757" fill-opacity="0.2" stroke="#ff4757" stroke-width="1" />
-                  <circle cx="100" cy="100" r="5" fill="#ffffff" fill-opacity="0.5" />
-               </svg>
-            </div>
-          </div>
-          <!-- Widget 3: Tape -->
-          <div class="bg-[#13141e] rounded-lg border border-white/5 overflow-hidden flex flex-col">
-             <div class="px-2 py-1 bg-[#0a0b0f] flex items-center justify-between border-b border-white/5 text-[9px] font-mono text-[#a0aaba]">TAPE</div>
-             <div class="flex-1 p-2 font-mono text-[9px]">
-               {[...Array(12)].map((_, i) => (
-                 <div class="flex justify-between border-b border-white/5 py-1">
-                   <span class={i % 2 === 0 ? 'text-accent-green' : 'text-accent-red'}>{i % 2 === 0 ? 'BUY' : 'SELL'}</span>
-                   <span class="text-[#e8eaf0]">{(Math.random()*2).toFixed(3)} BTC</span>
-                   <span class="text-text-primary">22:04:{(30-i).toString().padStart(2, '0')}</span>
-                 </div>
-               ))}
-             </div>
-          </div>
-          <!-- Widget 4: Positions -->
-          <div class="bg-[#13141e] rounded-lg border border-white/5 overflow-hidden flex flex-col">
-            <div class="px-2 py-1 bg-[#0a0b0f] flex items-center justify-between border-b border-white/5 text-[9px] font-mono text-[#a0aaba]">POSITIONS</div>
-            <div class="flex-1 p-4 flex flex-col items-center justify-center gap-2">
-               <span class="text-[10px] text-[#e8eaf0]">BTCUSDT LONG</span>
-               <span class="text-2xl font-bold font-mono text-accent-green">+ 12.42%</span>
-               <div class="w-full h-1 bg-white/5 rounded-full overflow-hidden">
-                 <div class="h-full bg-accent-green w-[70%]"></div>
-               </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Right: Order Book -->
-        <div class="bg-[#13141e] flex flex-col border-l border-white/5 shadow-2xl">
-          <div class="h-8 bg-[#0a0b0f] border-b border-white/5 flex items-center justify-between px-3 text-[9px] font-mono text-[#a0aaba]">
-            <span>ORDER BOOK</span>
-            <span class="text-accent-green">DEPTH: 100</span>
-          </div>
-          <div class="flex-1 flex flex-col font-mono text-[10px] p-2">
-            <!-- Asks -->
-            <div class="flex flex-col-reverse gap-[1px]">
-              {[...Array(12)].map((_, i) => (
-                <div class="relative flex justify-between px-2 py-0.5 group hover:bg-white/5 cursor-pointer">
-                  <div class="absolute right-0 top-0 bottom-0 bg-accent-red/10" style={`width: ${Math.random()*80}%`}></div>
-                  <span class="text-accent-red z-10 font-bold">72,40{i}.5</span>
-                  <span class="text-text-primary z-10">{(Math.random()*4).toFixed(3)}</span>
-                </div>
-              ))}
-            </div>
-            <!-- Spread -->
-            <div class="my-2 py-1 border-y border-white/10 flex justify-between items-center px-2 bg-white/5 rounded">
-               <span class="text-[11px] font-bold text-text-primary italic tracking-widest">72,394.2</span>
-               <span class="text-[9px] text-[#a0aaba]">SPREAD: 1.5</span>
-            </div>
-            <!-- Bids -->
-            <div class="flex flex-col gap-[1px]">
-              {[...Array(15)].map((_, i) => (
-                <div class="relative flex justify-between px-2 py-0.5 group hover:bg-white/5 cursor-pointer">
-                  <div class="absolute right-0 top-0 bottom-0 bg-accent-green/10" style={`width: ${Math.random()*80}%`}></div>
-                  <span class="text-accent-green z-10 font-bold">72,38{9-i}.2</span>
-                  <span class="text-text-primary z-10">{(Math.random()*6).toFixed(3)}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ── Status bar ── -->
-      <div class="h-7 bg-[#0a0b0f] border-t border-white/5 flex items-center px-4 gap-6 text-[9px] font-mono">
-        <div class="flex items-center gap-2">
-           <span class="w-1.5 h-1.5 rounded-full bg-accent-green animate-pulse"></span>
-           <span class="text-[#a0aaba]">PRODUCER RUNNING</span>
-        </div>
-        <div class="flex items-center gap-2">
-           <span class="text-[#e8eaf0]">LATENCY:</span>
-           <span class="text-accent-green font-bold">0.42ms</span>
-        </div>
-        <div class="flex-1"></div>
-        <div class="text-[#a0aaba]">SYSTEM LOAD: 4%</div>
-      </div>
-
-    </div><!-- end terminal -->
+    <div class="relative rounded-2xl overflow-hidden border border-white/10 shadow-[0_40px_100px_rgba(0,0,0,0.9)]">
+      <img
+        src="/terminal-demo.png"
+        alt="MarketMaker Scalper terminal — real-time cluster chart and order book"
+        class="w-full h-auto block"
+        width="1400"
+        height="900"
+      />
+    </div>
   </div>
 
 </section>
